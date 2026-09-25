@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="STAR GUARDIAN" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Crect width=%27512%27 height=%27512%27 rx=%27110%27 fill=%27%23020713%27/%3E%3Cpath d=%27M256 70 310 194 420 240 320 280 288 440 256 382 224 440 192 280 92 240 202 194Z%27 fill=%27%2375ddff%27 stroke=%27white%27 stroke-width=%278%27/%3E%3Ccircle cx=%27256%27 cy=%27256%27 r=%2722%27 fill=%27white%27/%3E%3C/svg%3E" />
-<title>STAR GUARDIAN</title>
+<title>STAR GUARDIAN // BALANCE UPDATE 1.1</title>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -367,11 +367,11 @@
     <div class="stepHead"><div class="stepTitle">DIFFICULTY</div><div class="stepCount">STEP 1 / 3</div></div>
     <p class="sub" style="margin-bottom:8px;">難易度で敵HP・弾速・攻撃頻度・スコア倍率が変化。</p>
     <div class="difficultyGrid">
-      <button class="difficultyBtn" data-difficulty="VERY_EASY"><strong>VERY EASY</strong><small>接待モード：敵HP 約1/3 / 敵弾ほぼ半速 / 攻撃頻度 約4割<br>LIFE +3 / BOMB +3 / 攻撃力 +55% / 追加シールド1枚 / 被弾後無敵延長</small><div class="diffBonus">SCORE ×0.55</div></button>
-      <button class="difficultyBtn" data-difficulty="EASY"><strong>EASY</strong><small>敵HP -30% / 弾速 -20%<br>攻撃頻度 -20%</small><div class="diffBonus">SCORE ×0.80</div></button>
+      <button class="difficultyBtn" data-difficulty="VERY_EASY"><strong>VERY EASY</strong><small>観光モード：敵HP 約1/5 / 敵数 約4割 / 敵弾かなり低速<br>LIFE +4 / BOMB +4 / 攻撃力 +80% / 追加シールド2枚</small><div class="diffBonus">SCORE ×0.55</div></button>
+      <button class="difficultyBtn" data-difficulty="EASY"><strong>EASY</strong><small>かなり簡単：敵HP 約45% / 敵数 約55%<br>LIFE +2 / BOMB +2 / 攻撃力 +25%</small><div class="diffBonus">SCORE ×0.80</div></button>
       <button class="difficultyBtn selected" data-difficulty="NORMAL"><strong>NORMAL</strong><small>標準バランス<br>これまでのSTAR GUARDIAN</small><div class="diffBonus">SCORE ×1.00</div></button>
-      <button class="difficultyBtn" data-difficulty="HARD"><strong>HARD</strong><small>敵HP +35% / 弾速 +18%<br>攻撃頻度 +25%</small><div class="diffBonus">SCORE ×1.35</div></button>
-      <button class="difficultyBtn" data-difficulty="NIGHTMARE"><strong>NIGHTMARE</strong><small>敵HP +75% / 弾速 +40%<br>攻撃頻度 +55%</small><div class="diffBonus">SCORE ×1.75</div></button>
+      <button class="difficultyBtn" data-difficulty="HARD"><strong>HARD</strong><small>旧NORMALより少し簡単<br>敵HP 95% / 敵数 約80%</small><div class="diffBonus">SCORE ×1.35</div></button>
+      <button class="difficultyBtn" data-difficulty="NIGHTMARE"><strong>NIGHTMARE</strong><small>高難度だが旧HARDより控えめ<br>敵HP 118% / 敵数 約90%</small><div class="diffBonus">SCORE ×1.75</div></button>
     </div>
     <div class="menuBtnRow"><button id="difficultyBackBtn" class="menuBack">BACK</button><button id="difficultyNextBtn" class="menuNext">NEXT / STAGE</button></div>
   </section>
@@ -833,6 +833,7 @@
   let paused=false, continuesLeft=3, gameOverTimer=null, gameOverTicker=null, gameOverSeconds=10;
   let stageStartScore=0, stageDestroyCount=0, stagePartsDestroyed=0, stageDamageCount=0, stageBombUse=0;
   let flash=0, shake=0, starSpeed=1;
+  let waveSpawnMode=false;
   let bullets=[], enemyBullets=[], enemies=[], particles=[], powerups=[], scenery=[], groundTargets=[];
   let boss=null;
   const stars = Array.from({length:125},() => ({x:Math.random()*W,y:Math.random()*H,z:rnd(.35,1.6),s:rnd(.7,2.1)}));
@@ -851,11 +852,11 @@
     OMEGA:{name:'Ω-ZERO',speed:470,r:6,lives:9,bombs:9,damage:2.60,fireRate:.55,desc:'神格級隠し機体。TRINITY ARRAY・3層再生シールド・無限BOMB COREを標準搭載。'}
   };
   const DIFFICULTIES={
-    VERY_EASY:{name:'VERY EASY',hp:.32,enemySpeed:.72,bullet:.48,attackRate:.38,score:.55,playerDamage:1.55,livesBonus:3,bombsBonus:3,shieldBonus:1,hitInv:1.75},
-    EASY:{name:'EASY',hp:.70,enemySpeed:.94,bullet:.80,attackRate:.80,score:.80,playerDamage:1,livesBonus:0,bombsBonus:0,shieldBonus:0,hitInv:1},
-    NORMAL:{name:'NORMAL',hp:1,enemySpeed:1,bullet:1,attackRate:1,score:1,playerDamage:1,livesBonus:0,bombsBonus:0,shieldBonus:0,hitInv:1},
-    HARD:{name:'HARD',hp:1.35,enemySpeed:1.08,bullet:1.18,attackRate:1.25,score:1.35,playerDamage:1,livesBonus:0,bombsBonus:0,shieldBonus:0,hitInv:1},
-    NIGHTMARE:{name:'NIGHTMARE',hp:1.75,enemySpeed:1.16,bullet:1.40,attackRate:1.55,score:1.75,playerDamage:1,livesBonus:0,bombsBonus:0,shieldBonus:0,hitInv:1}
+    VERY_EASY:{name:'VERY EASY',hp:.22,enemySpeed:.62,bullet:.36,attackRate:.24,score:.50,playerDamage:1.80,livesBonus:4,bombsBonus:4,shieldBonus:2,hitInv:2.10,density:.42,spawnGap:1.90,groundGap:1.70,reinforceGap:1.80},
+    EASY:{name:'EASY',hp:.45,enemySpeed:.78,bullet:.60,attackRate:.52,score:.72,playerDamage:1.25,livesBonus:2,bombsBonus:2,shieldBonus:1,hitInv:1.45,density:.55,spawnGap:1.55,groundGap:1.45,reinforceGap:1.55},
+    NORMAL:{name:'NORMAL',hp:.70,enemySpeed:.88,bullet:.76,attackRate:.70,score:1.00,playerDamage:1.08,livesBonus:1,bombsBonus:1,shieldBonus:0,hitInv:1.20,density:.68,spawnGap:1.32,groundGap:1.28,reinforceGap:1.35},
+    HARD:{name:'HARD',hp:.95,enemySpeed:.97,bullet:.92,attackRate:.88,score:1.25,playerDamage:1.00,livesBonus:0,bombsBonus:0,shieldBonus:0,hitInv:1.08,density:.80,spawnGap:1.16,groundGap:1.14,reinforceGap:1.18},
+    NIGHTMARE:{name:'NIGHTMARE',hp:1.18,enemySpeed:1.04,bullet:1.08,attackRate:1.08,score:1.55,playerDamage:1.00,livesBonus:0,bombsBonus:0,shieldBonus:0,hitInv:1.00,density:.90,spawnGap:1.06,groundGap:1.06,reinforceGap:1.08}
   };
   function currentDifficulty(){ return DIFFICULTIES[selectedDifficulty]||DIFFICULTIES.NORMAL; }
   function initialShieldCharges(airframe,support){
@@ -1626,6 +1627,7 @@
   function spawnEnemy(type='orbitFighter', x=rnd(35,W-35), y=-30, phase=Math.random()*10){
     const data=ENEMY_DEFS[type]||ENEMY_DEFS.orbitFighter;
     const d=currentDifficulty();
+    if(waveSpawnMode && !data.heavy && Math.random()>(d.density??1)) return;
     const tough=(stage===9?2.52:(stage===8?2.28:(stage===7?2.05:(stage===6?1.86:(stage===5?1.68:(stage===4?1.52:(stage===3?1.38:(stage===2?1.22:1))))))))*d.hp;
     const fast=(stage===9?1.38:(stage===8?1.34:(stage===7?1.30:(stage===6?1.26:(stage===5?1.22:(stage===4?1.19:(stage===3?1.16:(stage===2?1.10:1))))))))*d.enemySpeed;
     const ptsMul=(stage===9?2.8:(stage===8?2.5:(stage===7?2.2:(stage===6?1.94:(stage===5?1.72:(stage===4?1.55:(stage===3?1.35:(stage===2?1.2:1))))))))*d.score;
@@ -1634,6 +1636,8 @@
 
   function spawnWave(){
     const choice=Math.floor(Math.random()*6);
+    waveSpawnMode=true;
+    try {
 
     if(stage===1){
       // 宇宙専用：迎撃機 / 無人機 / 重砲艦 / 衛星砲台
@@ -1774,6 +1778,9 @@
       spawnEnemy('siegeBomber',W*.30,-60,.2);
       spawnEnemy('siegeBomber',W*.70,-105,.9);
       for(let i=0;i<4;i++) spawnEnemy('armoredDrone',W/2+(i-1.5)*58,-145-i*24,i*.5);
+    }
+    } finally {
+      waveSpawnMode=false;
     }
   }
 
@@ -2398,7 +2405,7 @@
     }
     if(tacticalState==='ALERT'){
       alertTimer-=dt; detectionLevel=100; alertReinforceTimer-=dt;
-      if(alertReinforceTimer<=0){ spawnEnemy(Math.random()<.55?'stealthJet':'assaultCopter',Math.random()<.5?55:W-55,-50,rnd(0,9)); alertReinforceTimer=rnd(1.15,1.8); }
+      if(alertReinforceTimer<=0){ spawnEnemy(Math.random()<.55?'stealthJet':'assaultCopter',Math.random()<.5?55:W-55,-50,rnd(0,9)); alertReinforceTimer=rnd(1.15,1.8)*(currentDifficulty().reinforceGap||1); }
       if(alertTimer<=0){ tacticalState='CAUTION'; cautionTimer=6.5; detectionLevel=52; showMessage('CAUTION // SEARCHING',720); showRadio('GHOST-1','敵は見失いかけている。動きを抑えろ。',2200,'STEALTH COMMS'); }
     } else if(tacticalState==='CAUTION'){
       cautionTimer-=dt; detectionLevel=Math.max(25,detectionLevel-dt*6); if(seen) detectionLevel+=dt*55;
@@ -2535,12 +2542,12 @@
       else if(stage===5){ const r=Math.random(); spawnGroundTarget(r<.43?'frostBattery':(r<.72?'iceRadar':'snowCrawler')); }
       else if(stage===4){ const r=Math.random(); spawnGroundTarget(r<.42?'magmaTurret':(r<.72?'heatVent':'lavaTank')); }
       else spawnGroundTarget();
-      groundTimer=stage===9?rnd(.86,1.35):(stage===8?rnd(.62,1.02):(stage===7?rnd(.72,1.16):(stage===6?rnd(.80,1.30):(stage===5?rnd(.92,1.48):(stage===4?rnd(1.0,1.65):rnd(1.2,2.0))))));
+      groundTimer=(stage===9?rnd(.86,1.35):(stage===8?rnd(.62,1.02):(stage===7?rnd(.72,1.16):(stage===6?rnd(.80,1.30):(stage===5?rnd(.92,1.48):(stage===4?rnd(1.0,1.65):rnd(1.2,2.0)))))))*(currentDifficulty().groundGap||1);
     }
     for(const g of groundTargets){
       g.t+=dt; g.y+=g.vy*dt*starSpeed*.88; g.flash=Math.max(0,g.flash-dt);
       if(g.type==='battery'||g.type==='magmaTurret'||g.type==='lavaTank'||g.type==='frostBattery'||g.type==='snowCrawler'||g.type==='neonBattery'||g.type==='roofTank'||g.type==='phaseTurret'||g.type==='coreVent'||g.type==='laserGate'||g.type==='defensePylon'||g.type==='samBattery'||g.type==='armoredPatrol'){
-        const alertFire=stage===9?(tacticalState==='ALERT'?1.55:(tacticalState==='CAUTION'?1.20:1)):1; g.shoot-=dt*currentDifficulty().attackRate*alertFire;
+        const alertFire=stage===9?(tacticalState==='ALERT'?1.24:(tacticalState==='CAUTION'?1.08:1)):1; g.shoot-=dt*currentDifficulty().attackRate*alertFire;
         if(g.shoot<=0 && g.y>45 && g.y<H-170){
           enemyShoot(g,true,0); g.shoot=rnd(1.3,2.0);
         }
@@ -2551,10 +2558,10 @@
 
     if(!stageTransition){
       if(!boss && !secretRouteActive){
-        const alertSpawn=stage===9?(tacticalState==='ALERT'?1.72:(tacticalState==='CAUTION'?1.24:1)):1; spawnTimer-=dt*alertSpawn;
+        const alertSpawn=stage===9?(tacticalState==='ALERT'?1.28:(tacticalState==='CAUTION'?1.10:1)):1; spawnTimer-=dt*alertSpawn;
         if(spawnTimer<=0){
           spawnWave();
-          spawnTimer=Math.max(stage===9?.30:(stage===8?.32:(stage===7?.36:(stage===6?.40:(stage===5?.44:(stage===4?.48:(stage===3?.54:(stage===2?.62:.8))))))),(stage===9?.92:(stage===8?.94:(stage===7?1.02:(stage===6?1.10:(stage===5?1.18:(stage===4?1.28:(stage===3?1.42:(stage===2?1.55:1.85))))))))-stageTime*.018);
+          spawnTimer=Math.max(stage===9?.30:(stage===8?.32:(stage===7?.36:(stage===6?.40:(stage===5?.44:(stage===4?.48:(stage===3?.54:(stage===2?.62:.8))))))),(stage===9?.92:(stage===8?.94:(stage===7?1.02:(stage===6?1.10:(stage===5?1.18:(stage===4?1.28:(stage===3?1.42:(stage===2?1.55:1.85))))))))-stageTime*.018)*(currentDifficulty().spawnGap||1);
         }
       }
       if(stage===1 && !bossSpawned && stageTime>48){ bossSpawned=true; spawnBoss(); }
