@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="STAR GUARDIAN" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Crect width=%27512%27 height=%27512%27 rx=%27110%27 fill=%27%23020713%27/%3E%3Cpath d=%27M256 70 310 194 420 240 320 280 288 440 256 382 224 440 192 280 92 240 202 194Z%27 fill=%27%2375ddff%27 stroke=%27white%27 stroke-width=%278%27/%3E%3Ccircle cx=%27256%27 cy=%27256%27 r=%2722%27 fill=%27white%27/%3E%3C/svg%3E" />
-<title>STAR GUARDIAN // BALANCE UPDATE 1.1</title>
+<title>STAR GUARDIAN // VERSION 1.4.3</title>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -29,9 +29,24 @@
   #specialBtn.ready { box-shadow:0 0 23px rgba(94,238,255,.55), inset 0 0 10px rgba(255,255,255,.16); }
   #specialBtn.active { background:radial-gradient(circle,#ffffff,#68f4ff 38%,#1f78d2 75%); transform:scale(1.05); }
   #specialBtn.disabled { opacity:.34; filter:grayscale(.5); }
+  #transformBtn { position:absolute; right:27px; bottom:calc(max(25px, env(safe-area-inset-bottom)) + 166px); width:60px; height:60px; border-radius:50%; pointer-events:auto; border:2px solid rgba(255,224,112,.62); background:radial-gradient(circle,#fff0a6,#d79c28 57%,#6f4316); color:#fff; font-weight:1000; font-size:8px; line-height:1.05; letter-spacing:.04em; box-shadow:0 6px 18px rgba(0,0,0,.34),0 0 18px rgba(255,206,83,.28); display:none; }
+  #transformBtn.show { display:block; }
+  #transformBtn.fighter { border-color:rgba(108,235,255,.7); background:radial-gradient(circle,#c8fbff,#2d9bd2 58%,#16486e); box-shadow:0 0 22px rgba(79,220,255,.42); }
+  #transformBtn.robot { border-color:rgba(255,224,112,.72); box-shadow:0 0 22px rgba(255,196,66,.36); }
   #startPanel { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(rgba(1,5,16,.58),rgba(1,5,16,.82)); z-index:10; padding:24px; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; touch-action:pan-y; }
   .card { width:min(92vw,430px); max-height:calc(100svh - 28px); overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; touch-action:pan-y; padding:26px 22px; border:1px solid rgba(127,205,255,.4); border-radius:18px; background:rgba(4,11,29,.87); box-shadow:0 18px 45px rgba(0,0,0,.5), inset 0 0 26px rgba(70,180,255,.05); text-align:center; }
   .title { font-size:clamp(28px,8vw,46px); line-height:.9; font-weight:1000; letter-spacing:.08em; margin-bottom:12px; background:linear-gradient(#fff,#8bd8ff 55%,#417bff); -webkit-background-clip:text; color:transparent; filter:drop-shadow(0 0 8px rgba(67,161,255,.25)); }
+  .versionTag { margin:-4px 0 11px; text-align:center; color:#71dfff; font-size:8px; font-weight:1000; letter-spacing:.16em; text-shadow:0 0 10px rgba(80,215,255,.28); }
+  .optionsGrid { display:grid; gap:9px; margin-top:10px; }
+  .optionBlock { padding:11px; border-radius:12px; border:1px solid rgba(130,196,255,.18); background:rgba(255,255,255,.028); }
+  .optionLabel { display:flex; justify-content:space-between; gap:8px; align-items:center; margin-bottom:8px; }
+  .optionLabel strong { color:#eaf8ff; font-size:11px; letter-spacing:.10em; }
+  .optionLabel small { color:#7f9ab6; font-size:8px; font-weight:800; text-align:right; }
+  .optionChoices { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .optionChoices.two { grid-template-columns:repeat(2,1fr); }
+  .optionBtn { appearance:none; border:1px solid rgba(125,191,255,.22); border-radius:9px; padding:9px 5px; background:linear-gradient(180deg,rgba(21,39,66,.86),rgba(8,17,33,.94)); color:#9fb8cf; font-size:9px; font-weight:1000; letter-spacing:.06em; }
+  .optionBtn.selected { color:#fff; border-color:#6cecff; background:linear-gradient(180deg,rgba(27,131,166,.82),rgba(15,62,100,.94)); box-shadow:0 0 14px rgba(75,226,255,.18),inset 0 0 10px rgba(116,232,255,.06); }
+  .optionsSummary { margin-top:9px; padding:8px 10px; border-radius:10px; background:rgba(93,207,255,.06); color:#a9cbe0; font-size:8px; line-height:1.55; font-weight:800; }
   .sub { opacity:.75; font-size:13px; line-height:1.65; margin:0 0 18px; }
   #startBtn { appearance:none; border:none; border-radius:999px; padding:14px 28px; font-weight:900; font-size:17px; color:#031021; background:linear-gradient(180deg,#dff7ff,#60caff); box-shadow:0 8px 22px rgba(50,180,255,.28); width:100%; }
   .stageLabel { margin:4px 0 9px; font-size:12px; font-weight:900; letter-spacing:.16em; color:#a9dfff; }
@@ -53,6 +68,10 @@
   .loadoutBtn[data-weapon="PLASMA"] .weaponIcon::before { top:3px; width:18px; height:18px; border-radius:50%; background:radial-gradient(circle,#fff 0 18%,currentColor 35%,rgba(90,235,255,.08) 72%); box-shadow:0 0 12px currentColor; }
   .loadoutBtn[data-weapon="RAILGUN"] { color:#c9d7ff; }
   .loadoutBtn[data-weapon="RAILGUN"] .weaponIcon::before { top:0; width:4px; height:22px; background:linear-gradient(#fff,currentColor); box-shadow:-7px 7px 0 -1px currentColor,7px 7px 0 -1px currentColor,0 0 10px currentColor; }
+  .loadoutBtn[data-weapon="BEAMRIFLE"] { color:#73e8ff; }
+  .loadoutBtn[data-weapon="BEAMRIFLE"] .weaponIcon::before { top:2px; width:26px; height:16px; background:currentColor; clip-path:polygon(0 36%,58% 36%,66% 0,78% 0,76% 35%,100% 35%,100% 55%,74% 55%,68% 100%,56% 100%,60% 55%,0 55%); box-shadow:0 0 9px currentColor; }
+  .loadoutBtn[data-weapon="FUNNEL"] { color:#c9a3ff; }
+  .loadoutBtn[data-weapon="FUNNEL"] .weaponIcon::before { top:2px; width:26px; height:20px; background:currentColor; clip-path:polygon(48% 36%,52% 36%,52% 64%,48% 64%,5% 5%,24% 8%,43% 38%,57% 38%,76% 8%,95% 5%,58% 47%,58% 53%,95% 95%,76% 92%,57% 62%,43% 62%,24% 92%,5% 95%,42% 53%,42% 47%); filter:drop-shadow(0 0 7px currentColor); }
   .loadoutBtn.selected { border-color:currentColor; background:rgba(42,70,105,.88); box-shadow:0 0 16px color-mix(in srgb,currentColor 35%,transparent), inset 0 0 14px rgba(255,255,255,.05); }
   .loadoutBtn small { display:block; color:#c9d5e6; opacity:.68; margin-top:4px; font-size:8px; font-weight:700; }
   .stageSelect { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin:0 0 14px; }
@@ -94,6 +113,10 @@
   .airframeBtn[data-airframe="AEGIS"] .planeIcon::before { background:linear-gradient(#fff,#8bb7da 58%,#355778); clip-path:polygon(50% 0,64% 28%,100% 48%,78% 63%,62% 62%,60% 100%,50% 80%,40% 100%,38% 62%,22% 63%,0 48%,36% 28%); }
   .airframeBtn[data-airframe="DRAGOON"] .planeIcon { transform:scaleX(1.22) scaleY(.94); filter:drop-shadow(0 0 7px rgba(255,157,82,.7)); }
   .airframeBtn[data-airframe="DRAGOON"] .planeIcon::before { background:linear-gradient(#ffe5bf,#9d5f3a 55%,#3b1d18); clip-path:polygon(50% 0,63% 24%,100% 48%,82% 64%,63% 61%,69% 100%,50% 78%,31% 100%,37% 61%,18% 64%,0 48%,37% 24%); }
+  .airframeBtn[data-airframe="VALKYRIE"] { border-color:rgba(121,226,255,.42); background:linear-gradient(180deg,rgba(18,46,78,.92),rgba(10,17,36,.94)); }
+  .airframeBtn[data-airframe="VALKYRIE"] .planeIcon { transform:scale(.96); filter:drop-shadow(0 0 8px rgba(99,225,255,.82)); }
+  .airframeBtn[data-airframe="VALKYRIE"] .planeIcon::before { background:linear-gradient(#fff 0 24%,#d9eef7 24% 42%,#2875be 42% 60%,#f14646 60% 72%,#d7b64a 72% 82%,#39465b 82%); clip-path:polygon(42% 0,49% 9%,50% 1%,51% 9%,58% 0,56% 16%,68% 23%,82% 20%,96% 35%,78% 43%,72% 58%,82% 100%,61% 100%,54% 65%,46% 65%,39% 100%,18% 100%,28% 58%,22% 43%,4% 35%,18% 20%,32% 23%,44% 16%); }
+  .airframeBtn[data-airframe="VALKYRIE"].selected { border-color:#8deaff; box-shadow:0 0 20px rgba(82,222,255,.28),inset 0 0 16px rgba(255,255,255,.05); }
   .airframeGrid { grid-template-columns:repeat(2,1fr); }
   .airframeBtn[data-airframe="OMEGA"] { border-color:rgba(170,110,255,.45); color:#e8dbff; background:linear-gradient(180deg,rgba(45,25,76,.9),rgba(10,17,36,.94)); }
   .airframeBtn[data-airframe="OMEGA"] .planeIcon { transform:scale(1.08); filter:drop-shadow(0 0 8px rgba(159,104,255,.88)); }
@@ -277,6 +300,7 @@
   <div id="stickZone"><div id="stickBase"><div id="stickKnob"></div></div></div>
   <button id="bombBtn" aria-label="BOMB">BOMB</button>
   <button id="specialBtn" aria-label="SPECIAL">SPECIAL</button>
+  <button id="transformBtn" aria-label="TRANSFORM">TRANSFORM</button>
 </div>
 <div id="message"></div>
 <div id="coreCutin"><div class="coreOrb"></div><div class="cutinBand"><div class="cutinEyebrow">EMERGENCY // LIMITER RELEASE</div><div class="cutinTitle">CORE AWAKENING</div><div class="cutinSub">PHASE 2 // CRITICAL COMBAT MODE</div></div></div>
@@ -336,6 +360,7 @@
 <button id="soundBtn" aria-label="sound toggle">SOUND ON</button>
 <div id="startPanel"><div class="card">
   <div class="title">STAR<br>GUARDIAN</div>
+  <div class="versionTag">VERSION 1.4.3 // REAR-VIEW VALKYRIE REWORK</div>
 
   <section id="titleScreen" class="menuScreen active">
     <p class="sub">縦スクロール高速シューティング<br>機体・主武装・補助装備を組み合わせて出撃。</p>
@@ -346,6 +371,40 @@
     </div>
     <button id="gameStartBtn" class="menuNext" style="width:100%;font-size:17px;padding:14px 20px;">GAME START</button>
     <button id="recordsBtn" class="recordsBtn">RECORDS / SAVE DATA</button>
+    <button id="optionsBtn" class="recordsBtn">OPTIONS / GAME SETTINGS</button>
+  </section>
+
+
+  <section id="optionsScreen" class="menuScreen">
+    <div class="stepHead"><div class="stepTitle">OPTIONS</div><div class="stepCount">VERSION 1.4.3</div></div>
+    <p class="sub" style="margin-bottom:7px;">難易度とは別に、敵の密度・操作感・画面揺れを調整できます。</p>
+    <div class="optionsGrid">
+      <div class="optionBlock">
+        <div class="optionLabel"><strong>ENEMY DENSITY</strong><small>敵数 / 出現間隔</small></div>
+        <div class="optionChoices">
+          <button class="optionBtn" data-option="density" data-value="LOW">LOW</button>
+          <button class="optionBtn" data-option="density" data-value="NORMAL">STANDARD</button>
+          <button class="optionBtn" data-option="density" data-value="HIGH">HIGH</button>
+        </div>
+      </div>
+      <div class="optionBlock">
+        <div class="optionLabel"><strong>CONTROL RESPONSE</strong><small>自機の移動反応</small></div>
+        <div class="optionChoices">
+          <button class="optionBtn" data-option="control" data-value="SOFT">SOFT</button>
+          <button class="optionBtn" data-option="control" data-value="NORMAL">NORMAL</button>
+          <button class="optionBtn" data-option="control" data-value="FAST">FAST</button>
+        </div>
+      </div>
+      <div class="optionBlock">
+        <div class="optionLabel"><strong>SCREEN SHAKE</strong><small>爆発時の画面揺れ</small></div>
+        <div class="optionChoices two">
+          <button class="optionBtn" data-option="shake" data-value="ON">ON</button>
+          <button class="optionBtn" data-option="shake" data-value="OFF">OFF</button>
+        </div>
+      </div>
+    </div>
+    <div id="optionsSummary" class="optionsSummary"></div>
+    <div class="menuBtnRow" style="grid-template-columns:1fr;"><button id="optionsBackBtn" class="menuBack">SAVE & BACK TO TITLE</button></div>
   </section>
 
   <section id="recordsScreen" class="menuScreen">
@@ -429,6 +488,7 @@
       <button class="airframeBtn" data-airframe="RAVEN"><i class="planeIcon"></i>RAVEN-S<small>高速ステルス / PHASE CLOAK</small></button>
       <button class="airframeBtn" data-airframe="AEGIS"><i class="planeIcon"></i>AEGIS-M<small>防御特化 / AEGIS FIELD</small></button>
       <button class="airframeBtn" data-airframe="DRAGOON"><i class="planeIcon"></i>DRAGOON-G<small>重火力 / DRAGON CANNON</small></button>
+      <button class="airframeBtn" data-airframe="VALKYRIE"><i class="planeIcon"></i>VALKYRIE-Z<small>VARIABLE FRAME / ROBOT ⇄ FIGHTER</small></button>
       <button class="airframeBtn omegaLocked" data-airframe="OMEGA"><i class="planeIcon"></i>????<small>LOCKED / STAGE 5 CLEAR</small></button>
     </div>
     <div id="airframeStats" class="statBox"></div>
@@ -441,6 +501,8 @@
       <button class="loadoutBtn" data-weapon="SPREAD"><i class="weaponIcon"></i>SPREAD<small>扇状散弾 / 近距離</small></button>
       <button class="loadoutBtn" data-weapon="PLASMA"><i class="weaponIcon"></i>PLASMA<small>大型貫通 / 高威力</small></button>
       <button class="loadoutBtn" data-weapon="RAILGUN"><i class="weaponIcon"></i>RAILGUN<small>超高速 / 狙撃貫通</small></button>
+      <button class="loadoutBtn" data-weapon="BEAMRIFLE"><i class="weaponIcon"></i>BEAM RIFLE<small>高精度ビーム / 中距離貫通</small></button>
+      <button class="loadoutBtn" data-weapon="FUNNEL"><i class="weaponIcon"></i>FUNNEL<small>遠隔ビット / 自動追尾</small></button>
     </div>
 
     <div class="sectionMini">SUPPORT EQUIPMENT</div>
@@ -485,6 +547,11 @@
   const startBtn = document.getElementById('startBtn');
   const gameStartBtn = document.getElementById('gameStartBtn');
   const recordsBtn = document.getElementById('recordsBtn');
+  const optionsBtn = document.getElementById('optionsBtn');
+  const optionsBackBtn = document.getElementById('optionsBackBtn');
+  const optionsScreen = document.getElementById('optionsScreen');
+  const optionsSummary = document.getElementById('optionsSummary');
+  const optionBtns = [...document.querySelectorAll('.optionBtn')];
   const recordsBackBtn = document.getElementById('recordsBackBtn');
   const titleHighScore = document.getElementById('titleHighScore');
   const titleMaxStage = document.getElementById('titleMaxStage');
@@ -524,6 +591,39 @@
   const loadoutBtns = [...document.querySelectorAll('.loadoutBtn')];
   const airframeBtns = [...document.querySelectorAll('.airframeBtn')];
   const supportBtns = [...document.querySelectorAll('.supportBtn')];
+  const OPTIONS_KEY='starGuardianOptionsV1';
+  const GAME_VERSION='1.4.3';
+  const DENSITY_PROFILES={
+    LOW:{waveDensity:.58,spawnGap:1.42,groundGap:1.34,reinforceGap:1.40},
+    NORMAL:{waveDensity:1,spawnGap:1,groundGap:1,reinforceGap:1},
+    HIGH:{waveDensity:1.20,spawnGap:.86,groundGap:.90,reinforceGap:.88}
+  };
+  const CONTROL_PROFILES={SOFT:.84,NORMAL:1,FAST:1.16};
+  let gameOptions={density:'NORMAL',control:'NORMAL',shake:true};
+  function loadOptions(){
+    try{
+      const raw=JSON.parse(localStorage.getItem(OPTIONS_KEY)||'null');
+      if(raw&&typeof raw==='object'){
+        if(['LOW','NORMAL','HIGH'].includes(raw.density)) gameOptions.density=raw.density;
+        if(['SOFT','NORMAL','FAST'].includes(raw.control)) gameOptions.control=raw.control;
+        if(typeof raw.shake==='boolean') gameOptions.shake=raw.shake;
+      }
+    }catch(e){}
+  }
+  function persistOptions(){ try{ localStorage.setItem(OPTIONS_KEY,JSON.stringify(gameOptions)); }catch(e){} }
+  function densityProfile(){ return DENSITY_PROFILES[gameOptions.density]||DENSITY_PROFILES.NORMAL; }
+  function controlMultiplier(){ return CONTROL_PROFILES[gameOptions.control]||1; }
+  function refreshOptionsUI(){
+    optionBtns.forEach(btn=>{
+      const k=btn.dataset.option,v=btn.dataset.value;
+      const active=k==='density'?gameOptions.density===v:(k==='control'?gameOptions.control===v:(k==='shake'?((gameOptions.shake?'ON':'OFF')===v):false));
+      btn.classList.toggle('selected',active);
+    });
+    const densityText={LOW:'かなり少なめ',NORMAL:'現在の標準',HIGH:'多め'}[gameOptions.density];
+    const controlText={SOFT:'ゆっくり',NORMAL:'標準',FAST:'キビキビ'}[gameOptions.control];
+    optionsSummary.textContent=`ENEMY ${densityText} / CONTROL ${controlText} / SHAKE ${gameOptions.shake?'ON':'OFF'} — 設定は自動保存されます。`;
+  }
+  loadOptions();
   let selectedDifficulty = 'NORMAL';
   try { selectedDifficulty = localStorage.getItem('starGuardianDifficulty') || 'NORMAL'; } catch(e) {}
   if(!['VERY_EASY','EASY','NORMAL','HARD','NIGHTMARE'].includes(selectedDifficulty)) selectedDifficulty='NORMAL';
@@ -636,6 +736,7 @@
   const soundBtn = document.getElementById('soundBtn');
   const bombBtn = document.getElementById('bombBtn');
   const specialBtn = document.getElementById('specialBtn');
+  const transformBtn = document.getElementById('transformBtn');
   const stickZone = document.getElementById('stickZone');
   const stickBase = document.getElementById('stickBase');
   const stickKnob = document.getElementById('stickKnob');
@@ -849,6 +950,7 @@
     RAVEN:{name:'RAVEN-S',speed:365,r:11,lives:3,bombs:2,damage:1.03,fireRate:.88,desc:'高速ステルス機。小型当たり判定とPHASE CLOAKを持つ。'},
     AEGIS:{name:'AEGIS-M',speed:286,r:16,lives:5,bombs:3,damage:.98,fireRate:1.02,desc:'迎撃防御機。2層シールドを標準装備しAEGIS FIELDを展開できる。'},
     DRAGOON:{name:'DRAGOON-G',speed:292,r:18,lives:4,bombs:4,damage:1.24,fireRate:1.10,desc:'重攻撃機。高火力とDRAGON CANNONで大型目標を粉砕する。'},
+    VALKYRIE:{name:'VALKYRIE-Z',speed:326,r:14,lives:4,bombs:3,damage:1.12,fireRate:.94,desc:'可変高機動戦闘フレーム。ROBOT MODEの火力とFIGHTER MODEの高速性能を戦闘中に切り替えられる。'},
     OMEGA:{name:'Ω-ZERO',speed:470,r:6,lives:9,bombs:9,damage:2.60,fireRate:.55,desc:'神格級隠し機体。TRINITY ARRAY・3層再生シールド・無限BOMB COREを標準搭載。'}
   };
   const DIFFICULTIES={
@@ -885,7 +987,7 @@
   const player = {
     x:W/2, y:H-120, r:15, speed:310, lives:3, bombs:3, power:1, weapon:'VULCAN',
     airframe:'FALCON', support:'BOOSTER', damageMult:1, fireRateMult:1, shieldCharges:0,
-    inv:0, shotCd:0, trail:0, specialTime:0, specialCd:0, specialShotCd:0
+    inv:0, shotCd:0, trail:0, specialTime:0, specialCd:0, specialShotCd:0, transformMode:null, transformAnim:0
   };
 
   function clearGameOverTimers(){
@@ -898,16 +1000,19 @@
     pauseScreen.classList.remove('show'); gameOverScreen.classList.remove('show');
     pauseBtn.style.display='none';
     titleScreen.classList.toggle('active',name==='title');
+    optionsScreen.classList.toggle('active',name==='options');
     recordsScreen.classList.toggle('active',name==='records');
     difficultyScreen.classList.toggle('active',name==='difficulty');
     stageScreen.classList.toggle('active',name==='stage');
     hangarScreen.classList.toggle('active',name==='hangar');
     briefScreen.classList.toggle('active',name==='brief');
     startPanel.style.display='flex';
+    if(transformBtn) transformBtn.classList.remove('show');
     hideRadio();
     if(name==='hangar') updateCustomPreview();
     if(name==='brief') updateBriefing();
     if(name==='title'||name==='records') updateRecordUI();
+    if(name==='options') refreshOptionsUI();
   }
 
   function refreshOmegaLockUI(){
@@ -942,7 +1047,7 @@
     if(omega){
       sortieSummary.textContent='Ω-ZERO / GOD MODE / '+selectedDifficulty+' / SCORE ×'+currentDifficulty().score.toFixed(2)+' — POWER Lv.10・3層再生シールド・BOMB無限・全方向TRINITY ARRAY。';
     } else {
-      const skills={FALCON:'WING GUN POD',SWIFT:'EVADE BOOST',TITAN:'TITAN BREAKER',RAVEN:'PHASE CLOAK',AEGIS:'AEGIS FIELD',DRAGOON:'DRAGON CANNON'};
+      const skills={FALCON:'WING GUN POD',SWIFT:'EVADE BOOST',TITAN:'TITAN BREAKER',RAVEN:'PHASE CLOAK',AEGIS:'AEGIS FIELD',DRAGOON:'DRAGON CANNON',VALKYRIE:'VARIABLE FRAME / PHOTON BLADE'};
       const skill=skills[selectedAirframe]?` SPECIAL: ${skills[selectedAirframe]}。`:'';
       const easyHelp=selectedDifficulty==='VERY_EASY'?' VERY EASY救済: LIFE+3 / BOMB+3 / DMG+55% / SHIELD+1。':'';
       sortieSummary.textContent=`${a.name} / ${selectedLoadout} / ${s.name} / ${selectedDifficulty} / SCORE ×${currentDifficulty().score.toFixed(2)} — ${a.desc} ${s.desc}${skill}${easyHelp}`;
@@ -1077,7 +1182,7 @@
     const supportSpeed=!isOmega && selectedSupport==='BOOSTER'?1.12:1;
     const d=currentDifficulty();
     const supportDmg=!isOmega && selectedSupport==='AMPLIFIER'?1.15:1;
-    Object.assign(player,{x:W/2,y:H-120,lives:isOmega?frame.lives:frame.lives+(d.livesBonus||0),bombs:isOmega?frame.bombs:frame.bombs+(d.bombsBonus||0),power:isOmega?10:1,weapon:isOmega?'OMEGA':selectedLoadout,airframe:selectedAirframe,support:isOmega?'OMEGA':selectedSupport,r:frame.r,speed:frame.speed*supportSpeed,damageMult:frame.damage*supportDmg*(d.playerDamage||1),fireRateMult:frame.fireRate,shieldCharges:initialShieldCharges(selectedAirframe,isOmega?'OMEGA':selectedSupport),inv:selectedDifficulty==='VERY_EASY'?4.0:2.4,shotCd:0,trail:0,shotIndex:0,specialTime:0,specialCd:0,specialShotCd:0,omegaShieldCd:0});
+    Object.assign(player,{x:W/2,y:H-120,lives:isOmega?frame.lives:frame.lives+(d.livesBonus||0),bombs:isOmega?frame.bombs:frame.bombs+(d.bombsBonus||0),power:isOmega?10:1,weapon:isOmega?'OMEGA':selectedLoadout,airframe:selectedAirframe,support:isOmega?'OMEGA':selectedSupport,r:frame.r,speed:frame.speed*supportSpeed,damageMult:frame.damage*supportDmg*(d.playerDamage||1),fireRateMult:frame.fireRate,shieldCharges:initialShieldCharges(selectedAirframe,isOmega?'OMEGA':selectedSupport),inv:selectedDifficulty==='VERY_EASY'?4.0:2.4,shotCd:0,trail:0,shotIndex:0,specialTime:0,specialCd:0,specialShotCd:0,omegaShieldCd:0,transformMode:selectedAirframe==='VALKYRIE'?'ROBOT':null,transformAnim:0});
   }
 
   function restartCurrentStage(){
@@ -1163,7 +1268,7 @@
     const supportSpeed=!isOmega && selectedSupport==='BOOSTER'?1.12:1;
     const d=currentDifficulty();
     const supportDmg=!isOmega && selectedSupport==='AMPLIFIER'?1.15:1;
-    Object.assign(player,{x:W/2,y:H-120,lives:isOmega?frame.lives:frame.lives+(d.livesBonus||0),bombs:isOmega?frame.bombs:frame.bombs+(d.bombsBonus||0),power:isOmega?10:1,weapon:isOmega?'OMEGA':selectedLoadout,airframe:selectedAirframe,support:isOmega?'OMEGA':selectedSupport,r:frame.r,speed:frame.speed*supportSpeed,damageMult:frame.damage*supportDmg*(d.playerDamage||1),fireRateMult:frame.fireRate,shieldCharges:initialShieldCharges(selectedAirframe,isOmega?'OMEGA':selectedSupport),inv:selectedDifficulty==='VERY_EASY'?4.0:1.4,shotCd:0,trail:0,shotIndex:0,specialTime:0,specialCd:0,specialShotCd:0,omegaShieldCd:0});
+    Object.assign(player,{x:W/2,y:H-120,lives:isOmega?frame.lives:frame.lives+(d.livesBonus||0),bombs:isOmega?frame.bombs:frame.bombs+(d.bombsBonus||0),power:isOmega?10:1,weapon:isOmega?'OMEGA':selectedLoadout,airframe:selectedAirframe,support:isOmega?'OMEGA':selectedSupport,r:frame.r,speed:frame.speed*supportSpeed,damageMult:frame.damage*supportDmg*(d.playerDamage||1),fireRateMult:frame.fireRate,shieldCharges:initialShieldCharges(selectedAirframe,isOmega?'OMEGA':selectedSupport),inv:selectedDifficulty==='VERY_EASY'?4.0:1.4,shotCd:0,trail:0,shotIndex:0,specialTime:0,specialCd:0,specialShotCd:0,omegaShieldCd:0,transformMode:selectedAirframe==='VALKYRIE'?'ROBOT':null,transformAnim:0});
     resultOpen=false; resultScreen.classList.remove('show'); resetStageStats();
 
     if(stage===1){
@@ -1216,14 +1321,42 @@
           : player.support==='SHIELD'
             ? 'SHIELD '+(player.shieldCharges>0?'◆':'◇')
             : (player.support==='AMPLIFIER'?'AMPLIFIER +15%':'BOOSTER +12%');
+      if(player.airframe==='VALKYRIE') supportHudEl.textContent+=' / '+(player.transformMode==='FIGHTER'?'FIGHTER':'ROBOT');
     }
     updateSpecialUI();
+    updateTransformUI();
+  }
+
+  function updateTransformUI(){
+    if(!transformBtn) return;
+    const show=player.airframe==='VALKYRIE' && running && !gameOver;
+    transformBtn.classList.toggle('show',show);
+    if(!show) return;
+    const fighter=player.transformMode==='FIGHTER';
+    transformBtn.classList.toggle('fighter',fighter);
+    transformBtn.classList.toggle('robot',!fighter);
+    transformBtn.innerHTML=fighter?'FIGHTER<br>⇄ ROBOT':'ROBOT<br>⇄ FIGHTER';
+  }
+
+  function transformValkyrie(){
+    if(!running || gameOver || player.airframe!=='VALKYRIE') return;
+    if((player.transformAnim||0)>0) return;
+    const fighter=player.transformMode!=='FIGHTER';
+    player.transformMode=fighter?'FIGHTER':'ROBOT';
+    player.transformAnim=.38;
+    player.r=fighter?10:14;
+    player.inv=Math.max(player.inv,.42);
+    flash=Math.max(flash,.22); shake=Math.max(shake,5);
+    burst(player.x,player.y,36,'engine');
+    showMessage(fighter?'VALKYRIE-Z / FIGHTER MODE':'VALKYRIE-Z / ROBOT MODE',720);
+    sfx('power');
+    updateHud();
   }
 
 
   function updateSpecialUI(){
     if(!specialBtn) return;
-    const names={FALCON:'WING GUN',SWIFT:'EVADE',TITAN:'BREAKER',RAVEN:'PHASE',AEGIS:'AEGIS',DRAGOON:'DRAGON',OMEGA:'Ω DRIVE'};
+    const names={FALCON:'WING GUN',SWIFT:'EVADE',TITAN:'BREAKER',RAVEN:'PHASE',AEGIS:'AEGIS',DRAGOON:'DRAGON',VALKYRIE:(player.transformMode==='FIGHTER'?'AERIAL':'PHOTON'),OMEGA:'Ω DRIVE'};
     const label=names[player.airframe];
     const usable=!!label;
     specialBtn.classList.toggle('disabled',!usable);
@@ -1281,6 +1414,24 @@
       player.specialShotCd=0;
       flash=Math.max(flash,.35); shake=8;
       showMessage('DRAGOON-G / DRAGON CANNON',950); sfx('warning');
+    } else if(player.airframe==='VALKYRIE'){
+      if(player.transformMode==='FIGHTER'){
+        player.specialTime=2.2;
+        player.specialCd=11;
+        player.specialShotCd=0;
+        player.inv=Math.max(player.inv,2.35);
+        flash=Math.max(flash,.38); shake=7;
+        burst(player.x-18,player.y+16,24,'engine'); burst(player.x+18,player.y+16,24,'engine');
+        showMessage('VALKYRIE-Z / AERIAL OVERDRIVE',950); sfx('power');
+      } else {
+        player.specialTime=5.5;
+        player.specialCd=18;
+        player.specialShotCd=0;
+        player.inv=Math.max(player.inv,.8);
+        flash=Math.max(flash,.32); shake=6;
+        burst(player.x-15,player.y+12,18,'engine'); burst(player.x+15,player.y+12,18,'engine');
+        showMessage('VALKYRIE-Z / PHOTON BLADE',950); sfx('power');
+      }
     } else if(player.airframe==='OMEGA'){
       player.specialTime=10;
       player.specialCd=12;
@@ -1328,6 +1479,20 @@
     bullets.push({weapon:'PLASMA',x:player.x-17,y:player.y-18,vx:-80,vy:-720,r:9.5,dmg:dmg*.55,life:1.5,pierce:true,plasma:true,overdrive:true});
     bullets.push({weapon:'PLASMA',x:player.x+17,y:player.y-18,vx:80,vy:-720,r:9.5,dmg:dmg*.55,life:1.5,pierce:true,plasma:true,overdrive:true});
     shake=Math.max(shake,3.5);
+  }
+
+  function shootValkyrieSpecial(){
+    const mult=(player.damageMult||1);
+    const phase=(player.shotIndex||0)*.42;
+    // Twin crescent photon blades. They cross in front of the frame and pierce targets.
+    const sweep=215+Math.sin(phase)*35;
+    bullets.push({weapon:'PHOTON',x:player.x-15,y:player.y-24,vx:-sweep,vy:-910,r:9.5,dmg:2.45*mult,life:1.15,pierce:true,laser:true,overdrive:true});
+    bullets.push({weapon:'PHOTON',x:player.x+15,y:player.y-24,vx:sweep,vy:-910,r:9.5,dmg:2.45*mult,life:1.15,pierce:true,laser:true,overdrive:true});
+    if((player.shotIndex||0)%2===0){
+      bullets.push({weapon:'PHOTON',x:player.x,y:player.y-34,vx:0,vy:-1180,r:7.2,dmg:2.10*mult,life:1.05,pierce:true,laser:true,overdrive:true});
+    }
+    player.shotIndex=(player.shotIndex||0)+1;
+    shake=Math.max(shake,2.3);
   }
 
   function shootOmegaSpecial(){
@@ -1627,7 +1792,11 @@
   function spawnEnemy(type='orbitFighter', x=rnd(35,W-35), y=-30, phase=Math.random()*10){
     const data=ENEMY_DEFS[type]||ENEMY_DEFS.orbitFighter;
     const d=currentDifficulty();
-    if(waveSpawnMode && !data.heavy && Math.random()>(d.density??1)) return;
+    if(waveSpawnMode){
+      const profile=densityProfile();
+      if(data.heavy){ if(gameOptions.density==='LOW' && Math.random()>.66) return; }
+      else if(Math.random()>Math.min(1,(d.density??1)*profile.waveDensity)) return;
+    }
     const tough=(stage===9?2.52:(stage===8?2.28:(stage===7?2.05:(stage===6?1.86:(stage===5?1.68:(stage===4?1.52:(stage===3?1.38:(stage===2?1.22:1))))))))*d.hp;
     const fast=(stage===9?1.38:(stage===8?1.34:(stage===7?1.30:(stage===6?1.26:(stage===5?1.22:(stage===4?1.19:(stage===3?1.16:(stage===2?1.10:1))))))))*d.enemySpeed;
     const ptsMul=(stage===9?2.8:(stage===8?2.5:(stage===7?2.2:(stage===6?1.94:(stage===5?1.72:(stage===4?1.55:(stage===3?1.35:(stage===2?1.2:1))))))))*d.score;
@@ -1795,8 +1964,11 @@
     else if(player.weapon==='SPREAD') cd=Math.max(.075,.155-p*.010);
     else if(player.weapon==='PLASMA') cd=Math.max(.14,.285-p*.018);
     else if(player.weapon==='RAILGUN') cd=Math.max(.16,.34-p*.021);
+    else if(player.weapon==='BEAMRIFLE') cd=Math.max(.09,.19-p*.012);
+    else if(player.weapon==='FUNNEL') cd=Math.max(.16,.30-p*.016);
     else cd=.12;
-    return cd*(player.fireRateMult||1);
+    const modeRate=(player.airframe==='VALKYRIE' && player.transformMode==='FIGHTER')?.84:1;
+    return cd*(player.fireRateMult||1)*modeRate;
   }
 
   function shootPlayer(){
@@ -1931,8 +2103,34 @@
       if(p>=4){ rail(player.x-13,-55,2.15+p*.19,2.9); rail(player.x+13,55,2.15+p*.19,2.9); }
       if(p>=7){ rail(player.x-25,-130,1.75+over*.12,2.6,{overdrive:true}); rail(player.x+25,130,1.75+over*.12,2.6,{overdrive:true}); }
       if(p>=10 && rearPulse) bullets.push({weapon:'RAILGUN',x:player.x,y:player.y+25,vx:0,vy:1150,r:3.2,dmg:3.0,life:.75,pierce:true,rail:true,rear:true,overdrive:true});
+    } else if(player.weapon==='BEAMRIFLE'){
+      const mainDmg=1.35+p*.19;
+      bullets.push({weapon:'BEAMRIFLE',x:player.x+8,y:player.y-27,vx:0,vy:-1040,r:5.6,dmg:mainDmg,life:1.25,pierce:true,laser:true});
+      if(p>=2) bullets.push({weapon:'BEAMRIFLE',x:player.x-8,y:player.y-23,vx:-35,vy:-980,r:4.0,dmg:.72+p*.08,life:1.2,pierce:true,laser:true});
+      if(p>=4) bullets.push({weapon:'BEAMRIFLE',x:player.x+18,y:player.y-18,vx:80,vy:-930,r:3.8,dmg:.62+p*.065,life:1.18,laser:true});
+      if(p>=6){
+        bullets.push({weapon:'BEAMRIFLE',x:player.x-18,y:player.y-18,vx:-120,vy:-900,r:3.8,dmg:.72+over*.08,life:1.16,laser:true,overdrive:true});
+        bullets.push({weapon:'BEAMRIFLE',x:player.x+24,y:player.y-14,vx:150,vy:-860,r:3.7,dmg:.68+over*.07,life:1.14,laser:true,overdrive:true});
+      }
+      if(p>=9 && rearPulse) bullets.push({weapon:'BEAMRIFLE',x:player.x-4,y:player.y+22,vx:0,vy:820,r:4.4,dmg:1.05,life:1.0,pierce:true,laser:true,rear:true,overdrive:true});
+      if(p>=10) bullets.push({weapon:'BEAMRIFLE',x:player.x+8,y:player.y-31,vx:0,vy:-1220,r:7.5,dmg:2.2,life:1.15,pierce:true,laser:true,overdrive:true});
+    } else if(player.weapon==='FUNNEL'){
+      const count=p>=9?6:(p>=6?5:(p>=3?4:3));
+      for(let i=0;i<count;i++){
+        const side=i%2===0?-1:1;
+        const tier=Math.floor(i/2);
+        const ox=side*(25+tier*8);
+        const oy=-6+tier*10;
+        const vx=side*(120+tier*25);
+        bullets.push({weapon:'FUNNEL',x:player.x+ox,y:player.y+oy,vx,vy:-430-tier*18,r:4.8,dmg:.78+p*.085,life:3.15,homing:true,turn:7.3+p*.34,overdrive:p>=6,funnel:true});
+      }
+      if(p>=7 && rearPulse){
+        bullets.push({weapon:'FUNNEL',x:player.x-24,y:player.y+18,vx:-115,vy:350,r:4.7,dmg:.86+over*.07,life:2.8,homing:true,turn:8.2+over*.3,rear:true,overdrive:true,funnel:true});
+        bullets.push({weapon:'FUNNEL',x:player.x+24,y:player.y+18,vx:115,vy:350,r:4.7,dmg:.86+over*.07,life:2.8,homing:true,turn:8.2+over*.3,rear:true,overdrive:true,funnel:true});
+      }
     }
-    const dmgMul=player.damageMult||1;
+    const valkyrieModeDamage=player.airframe==='VALKYRIE' ? (player.transformMode==='FIGHTER'?.88:1.12) : 1;
+    const dmgMul=(player.damageMult||1)*valkyrieModeDamage;
     for(let i=bulletStart;i<bullets.length;i++) bullets[i].dmg*=dmgMul;
   }
 
@@ -2405,7 +2603,7 @@
     }
     if(tacticalState==='ALERT'){
       alertTimer-=dt; detectionLevel=100; alertReinforceTimer-=dt;
-      if(alertReinforceTimer<=0){ spawnEnemy(Math.random()<.55?'stealthJet':'assaultCopter',Math.random()<.5?55:W-55,-50,rnd(0,9)); alertReinforceTimer=rnd(1.15,1.8)*(currentDifficulty().reinforceGap||1); }
+      if(alertReinforceTimer<=0){ spawnEnemy(Math.random()<.55?'stealthJet':'assaultCopter',Math.random()<.5?55:W-55,-50,rnd(0,9)); alertReinforceTimer=rnd(1.15,1.8)*(currentDifficulty().reinforceGap||1)*densityProfile().reinforceGap; }
       if(alertTimer<=0){ tacticalState='CAUTION'; cautionTimer=6.5; detectionLevel=52; showMessage('CAUTION // SEARCHING',720); showRadio('GHOST-1','敵は見失いかけている。動きを抑えろ。',2200,'STEALTH COMMS'); }
     } else if(tacticalState==='CAUTION'){
       cautionTimer-=dt; detectionLevel=Math.max(25,detectionLevel-dt*6); if(seen) detectionLevel+=dt*55;
@@ -2472,7 +2670,7 @@
     if(resultOpen || paused || gameOver){ flash=Math.max(0,flash-dt*2.2); shake*=Math.pow(.012,dt); return; }
     elapsed+=dt; stageTime+=dt; flash=Math.max(0,flash-dt*2.2); shake*=Math.pow(.012,dt);
     player.inv=Math.max(0,player.inv-dt); player.shotCd-=dt; player.trail-=dt;
-    player.specialTime=Math.max(0,(player.specialTime||0)-dt); player.specialCd=Math.max(0,(player.specialCd||0)-dt); player.specialShotCd-=dt;
+    player.specialTime=Math.max(0,(player.specialTime||0)-dt); player.specialCd=Math.max(0,(player.specialCd||0)-dt); player.specialShotCd-=dt; player.transformAnim=Math.max(0,(player.transformAnim||0)-dt);
     if(player.airframe==='OMEGA'){
       player.omegaShieldCd=Math.max(0,(player.omegaShieldCd||0)-dt);
       if(player.shieldCharges<3 && player.omegaShieldCd<=0){ player.shieldCharges++; player.omegaShieldCd=3.0; showMessage('OMEGA SHIELD REGENERATED',420); sfx('power'); updateHud(); }
@@ -2483,6 +2681,10 @@
     if(player.airframe==='RAVEN' && player.specialTime>0) player.inv=Math.max(player.inv,.22);
     if(player.airframe==='AEGIS' && player.specialTime>0){ player.inv=Math.max(player.inv,.22); enemyBullets.length=0; }
     if(player.airframe==='DRAGOON' && player.specialTime>0 && player.specialShotCd<=0){ shootDragoonSpecial(); player.specialShotCd=.16; }
+    if(player.airframe==='VALKYRIE' && player.specialTime>0){
+      if(player.transformMode==='FIGHTER') player.inv=Math.max(player.inv,.20);
+      else if(player.specialShotCd<=0){ shootValkyrieSpecial(); player.specialShotCd=.23; player.inv=Math.max(player.inv,.12); }
+    }
     if(player.airframe==='OMEGA' && player.specialTime>0){
       player.inv=Math.max(player.inv,.22);
       enemyBullets.length=0;
@@ -2490,11 +2692,13 @@
     }
 
     const specialSpeed=(player.airframe==='SWIFT' && player.specialTime>0)?1.95:((player.airframe==='RAVEN' && player.specialTime>0)?1.42:((player.airframe==='TITAN' && player.specialTime>0)?.62:1));
-    player.x=clamp(player.x+input.x*player.speed*specialSpeed*dt,24,W-24);
-    player.y=clamp(player.y+input.y*player.speed*specialSpeed*dt,88,H-70);
+    const valkyrieModeSpeed=player.airframe==='VALKYRIE' && player.transformMode==='FIGHTER' ? (player.specialTime>0?1.62:1.34) : 1;
+    const optionControl=controlMultiplier();
+    player.x=clamp(player.x+input.x*player.speed*specialSpeed*valkyrieModeSpeed*optionControl*dt,24,W-24);
+    player.y=clamp(player.y+input.y*player.speed*specialSpeed*valkyrieModeSpeed*optionControl*dt,88,H-70);
     if(player.shotCd<=0){ shootPlayer(); player.shotCd=weaponCooldown(); }
     if(player.trail<=0){
-      particles.push({x:player.x+rnd(-4,4),y:player.y+20,vx:rnd(-12,12),vy:rnd(90,170),life:.28,max:1,size:rnd(2,4),kind:'engine'});
+      particles.push({x:player.x+rnd(-4,4),y:player.y+(player.airframe==='VALKYRIE'&&player.transformMode==='FIGHTER'?26:20),vx:rnd(-12,12),vy:rnd(player.airframe==='VALKYRIE'&&player.transformMode==='FIGHTER'?140:90,player.airframe==='VALKYRIE'&&player.transformMode==='FIGHTER'?250:170),life:.28,max:1,size:rnd(2,4),kind:'engine'});
       player.trail=.028;
     }
 
@@ -2542,7 +2746,7 @@
       else if(stage===5){ const r=Math.random(); spawnGroundTarget(r<.43?'frostBattery':(r<.72?'iceRadar':'snowCrawler')); }
       else if(stage===4){ const r=Math.random(); spawnGroundTarget(r<.42?'magmaTurret':(r<.72?'heatVent':'lavaTank')); }
       else spawnGroundTarget();
-      groundTimer=(stage===9?rnd(.86,1.35):(stage===8?rnd(.62,1.02):(stage===7?rnd(.72,1.16):(stage===6?rnd(.80,1.30):(stage===5?rnd(.92,1.48):(stage===4?rnd(1.0,1.65):rnd(1.2,2.0)))))))*(currentDifficulty().groundGap||1);
+      groundTimer=(stage===9?rnd(.86,1.35):(stage===8?rnd(.62,1.02):(stage===7?rnd(.72,1.16):(stage===6?rnd(.80,1.30):(stage===5?rnd(.92,1.48):(stage===4?rnd(1.0,1.65):rnd(1.2,2.0)))))))*(currentDifficulty().groundGap||1)*densityProfile().groundGap;
     }
     for(const g of groundTargets){
       g.t+=dt; g.y+=g.vy*dt*starSpeed*.88; g.flash=Math.max(0,g.flash-dt);
@@ -2561,7 +2765,7 @@
         const alertSpawn=stage===9?(tacticalState==='ALERT'?1.28:(tacticalState==='CAUTION'?1.10:1)):1; spawnTimer-=dt*alertSpawn;
         if(spawnTimer<=0){
           spawnWave();
-          spawnTimer=Math.max(stage===9?.30:(stage===8?.32:(stage===7?.36:(stage===6?.40:(stage===5?.44:(stage===4?.48:(stage===3?.54:(stage===2?.62:.8))))))),(stage===9?.92:(stage===8?.94:(stage===7?1.02:(stage===6?1.10:(stage===5?1.18:(stage===4?1.28:(stage===3?1.42:(stage===2?1.55:1.85))))))))-stageTime*.018)*(currentDifficulty().spawnGap||1);
+          spawnTimer=Math.max(stage===9?.30:(stage===8?.32:(stage===7?.36:(stage===6?.40:(stage===5?.44:(stage===4?.48:(stage===3?.54:(stage===2?.62:.8))))))),(stage===9?.92:(stage===8?.94:(stage===7?1.02:(stage===6?1.10:(stage===5?1.18:(stage===4?1.28:(stage===3?1.42:(stage===2?1.55:1.85))))))))-stageTime*.018)*(currentDifficulty().spawnGap||1)*densityProfile().spawnGap;
         }
       }
       if(stage===1 && !bossSpawned && stageTime>48){ bossSpawned=true; spawnBoss(); }
@@ -2939,6 +3143,148 @@
     else if(airframe==='AEGIS') ctx.scale(1.10,1.00);
     else if(airframe==='DRAGOON') ctx.scale(1.22,.96);
     const loadout = player.weapon || selectedLoadout || 'VULCAN';
+    if(airframe==='VALKYRIE'){
+      const pulse=.72+.28*Math.sin(elapsed*.018);
+      ctx.save();
+      if(player.transformMode==='FIGHTER'){
+        // VARIABLE FIGHTER MODE: folded humanoid frame becomes a sharp atmospheric/space interceptor.
+        const morph=(player.transformAnim||0)>0 ? 1+(player.transformAnim/.38)*.12 : 1;
+        ctx.scale(morph,1/morph);
+        ctx.shadowBlur=22;ctx.shadowColor='#66e8ff';
+        const wing=ctx.createLinearGradient(0,-42,0,34);
+        wing.addColorStop(0,'#f8fdff');wing.addColorStop(.36,'#d6e8f0');wing.addColorStop(.52,'#2875be');wing.addColorStop(.78,'#23466f');wing.addColorStop(1,'#101b2b');
+        ctx.fillStyle=wing;
+        ctx.beginPath();
+        ctx.moveTo(0,-46);ctx.lineTo(10,-28);ctx.lineTo(48,-17);ctx.lineTo(30,-2);ctx.lineTo(58,14);ctx.lineTo(20,12);ctx.lineTo(14,30);ctx.lineTo(0,38);ctx.lineTo(-14,30);ctx.lineTo(-20,12);ctx.lineTo(-58,14);ctx.lineTo(-30,-2);ctx.lineTo(-48,-17);ctx.lineTo(-10,-28);ctx.closePath();ctx.fill();
+        // folded limb armor / intakes
+        ctx.fillStyle='#f4f7f9';ctx.beginPath();ctx.moveTo(-18,-10);ctx.lineTo(-32,-4);ctx.lineTo(-20,14);ctx.lineTo(-8,9);ctx.closePath();ctx.fill();
+        ctx.beginPath();ctx.moveTo(18,-10);ctx.lineTo(32,-4);ctx.lineTo(20,14);ctx.lineTo(8,9);ctx.closePath();ctx.fill();
+        ctx.fillStyle='#d94c4c';ctx.fillRect(-10,5,20,6);
+        ctx.fillStyle='#e5c34d';ctx.shadowBlur=10;ctx.shadowColor='#ffe17a';ctx.beginPath();ctx.arc(0,-10,4,0,Math.PI*2);ctx.fill();
+        // armored nose and hidden head sensor
+        ctx.fillStyle='#ffffff';ctx.beginPath();ctx.moveTo(0,-50);ctx.lineTo(8,-28);ctx.lineTo(5,7);ctx.lineTo(0,20);ctx.lineTo(-5,7);ctx.lineTo(-8,-28);ctx.closePath();ctx.fill();
+        ctx.fillStyle='#1b426d';ctx.beginPath();ctx.moveTo(-4,-31);ctx.lineTo(4,-31);ctx.lineTo(3,-22);ctx.lineTo(-3,-22);ctx.closePath();ctx.fill();
+        ctx.fillStyle='#7af0ff';ctx.shadowBlur=14;ctx.shadowColor='#68efff';ctx.fillRect(-3,-29,6,2);
+        // variable-frame gold crest folds into dorsal stabilizers
+        ctx.fillStyle='#e5c34d';ctx.shadowBlur=7;ctx.shadowColor='#ffe080';
+        ctx.beginPath();ctx.moveTo(-5,-26);ctx.lineTo(-22,-36);ctx.lineTo(-8,-20);ctx.closePath();ctx.fill();
+        ctx.beginPath();ctx.moveTo(5,-26);ctx.lineTo(22,-36);ctx.lineTo(8,-20);ctx.closePath();ctx.fill();
+        // weapon hardpoint
+        if(loadout==='BEAMRIFLE'){
+          ctx.fillStyle='#394957';ctx.shadowBlur=10;ctx.shadowColor='#73e8ff';ctx.fillRect(15,-18,7,39);ctx.fillStyle='#73e8ff';ctx.fillRect(17,-24,3,10);
+        }
+        if(loadout==='FUNNEL'){
+          const n=6;for(let i=0;i<n;i++){const a=elapsed*.0034+i*Math.PI*2/n;const fx=Math.cos(a)*44,fy=Math.sin(a)*15+2;ctx.save();ctx.translate(fx,fy);ctx.rotate(a+.7);ctx.fillStyle='#bfa6ff';ctx.shadowBlur=13;ctx.shadowColor='#bfa6ff';ctx.beginPath();ctx.moveTo(0,-7);ctx.lineTo(4,4);ctx.lineTo(0,8);ctx.lineTo(-4,4);ctx.closePath();ctx.fill();ctx.restore();}
+        }
+        // twin high-output thrusters
+        ctx.shadowBlur=24;ctx.shadowColor='#66eaff';ctx.fillStyle=`rgba(118,242,255,${.72+.22*pulse})`;
+        for(const sx of [-1,1]){ctx.beginPath();ctx.moveTo(sx*11,24);ctx.lineTo(sx*17,55+(player.specialTime>0?12:0));ctx.lineTo(sx*5,27);ctx.closePath();ctx.fill();}
+        if(player.specialTime>0){
+          ctx.globalAlpha=.48+.24*pulse;ctx.strokeStyle='#b8fbff';ctx.lineWidth=2.2;ctx.beginPath();ctx.ellipse(0,2,61,28,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
+        }
+        ctx.restore();ctx.restore();return;
+      }
+      // ROBOT MODE rear-view rework: back-facing top-down silhouette for a vertical shooter.
+      const bob=Math.sin(elapsed*.012)*.9;
+      ctx.translate(0,bob);
+      // wing binders / backpack fins spread from the back
+      ctx.shadowBlur=16;ctx.shadowColor='#6beaff';
+      const wg=ctx.createLinearGradient(0,-52,0,72);
+      wg.addColorStop(0,'#eef8ff');wg.addColorStop(.28,'#c7dae8');wg.addColorStop(.50,'#4a84bf');wg.addColorStop(.76,'#284a6a');wg.addColorStop(1,'#141f2d');
+      ctx.fillStyle=wg;
+      for(const sx of [-1,1]){
+        ctx.beginPath();
+        ctx.moveTo(sx*8,-8);
+        ctx.lineTo(sx*24,-26);
+        ctx.lineTo(sx*52,-18);
+        ctx.lineTo(sx*44,10);
+        ctx.lineTo(sx*24,18);
+        ctx.lineTo(sx*12,8);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle='rgba(122,240,255,.7)';
+        ctx.fillRect(sx>0?36:-39,-14,3,12);
+        ctx.fillStyle=wg;
+      }
+      // backpack block
+      ctx.fillStyle='#244361';
+      ctx.beginPath();ctx.roundRect(-20,-18,40,20,7);ctx.fill();
+      ctx.fillStyle='#d6e5ee';ctx.beginPath();ctx.roundRect(-12,-23,24,9,4);ctx.fill();
+      // shoulder housings seen from behind
+      for(const sx of [-1,1]){
+        ctx.fillStyle='#eef5f9';
+        ctx.beginPath();ctx.moveTo(sx*12,-14);ctx.lineTo(sx*30,-18);ctx.lineTo(sx*34,-6);ctx.lineTo(sx*24,2);ctx.lineTo(sx*12,-2);ctx.closePath();ctx.fill();
+      }
+      // back thrusters and engine glow
+      ctx.fillStyle='#2e6ea8';ctx.beginPath();ctx.roundRect(-11,18,8,16,3);ctx.fill();ctx.beginPath();ctx.roundRect(3,18,8,16,3);ctx.fill();
+      ctx.fillStyle='rgba(111,232,255,.82)';ctx.shadowBlur=18;ctx.shadowColor='#6fe8ff';
+      ctx.fillRect(-10,34,6,18);ctx.fillRect(4,34,6,18);
+      // legs trailing clearly behind the torso
+      for(const sx of [-1,1]){
+        ctx.fillStyle='#edf4f8';
+        ctx.beginPath();
+        ctx.moveTo(sx*6,19);ctx.lineTo(sx*16,24);ctx.lineTo(sx*14,46);ctx.lineTo(sx*8,67);ctx.lineTo(sx*2,62);ctx.lineTo(sx*1,38);
+        ctx.closePath();ctx.fill();
+        ctx.fillStyle='#2b68a7';ctx.beginPath();ctx.roundRect(sx>0?7:-15,31,8,13,3);ctx.fill();
+        ctx.fillStyle='#eef6fb';ctx.beginPath();ctx.moveTo(sx*4,63);ctx.lineTo(sx*11,72);ctx.lineTo(sx*4,74);ctx.lineTo(sx*0,67);ctx.closePath();ctx.fill();
+      }
+      // waist / rear skirt armor
+      ctx.fillStyle='#d6e2e8';ctx.beginPath();ctx.roundRect(-12,12,24,8,3);ctx.fill();
+      ctx.fillStyle='#ce4545';ctx.fillRect(-6,13,12,4);
+      // torso / back armor. No face or front chest; this is the back view.
+      const tg=ctx.createLinearGradient(0,-36,0,28);
+      tg.addColorStop(0,'#ffffff');tg.addColorStop(.34,'#e4edf3');tg.addColorStop(.60,'#a0b9cd');tg.addColorStop(1,'#ced9e3');
+      ctx.fillStyle=tg;
+      ctx.beginPath();
+      ctx.moveTo(0,-28);ctx.lineTo(18,-16);ctx.lineTo(20,6);ctx.lineTo(11,20);ctx.lineTo(0,24);ctx.lineTo(-11,20);ctx.lineTo(-20,6);ctx.lineTo(-18,-16);
+      ctx.closePath();ctx.fill();
+      ctx.fillStyle='#2d78bc';
+      ctx.beginPath();ctx.moveTo(0,-18);ctx.lineTo(11,-11);ctx.lineTo(8,5);ctx.lineTo(0,10);ctx.lineTo(-8,5);ctx.lineTo(-11,-11);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#d84b4b';ctx.beginPath();ctx.moveTo(-7,6);ctx.lineTo(7,6);ctx.lineTo(4,13);ctx.lineTo(-4,13);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#f0cf58';ctx.shadowBlur=12;ctx.shadowColor='#ffd969';ctx.beginPath();ctx.arc(0,-1,3,0,Math.PI*2);ctx.fill();
+      // forearms tucked inward from a rear/top perspective
+      for(const sx of [-1,1]){
+        ctx.shadowBlur=8;ctx.shadowColor='#69ddff';
+        ctx.fillStyle='#477fba';
+        ctx.beginPath();ctx.moveTo(sx*15,-1);ctx.lineTo(sx*22,2);ctx.lineTo(sx*18,21);ctx.lineTo(sx*11,18);ctx.closePath();ctx.fill();
+        ctx.fillStyle='#edf5f9';
+        ctx.beginPath();ctx.moveTo(sx*12,18);ctx.lineTo(sx*18,21);ctx.lineTo(sx*15,34);ctx.lineTo(sx*9,30);ctx.closePath();ctx.fill();
+      }
+      // top/back of the head: no eyes looking at the player
+      ctx.fillStyle='#f6fbfd';ctx.shadowBlur=10;ctx.shadowColor='#81e9ff';ctx.beginPath();ctx.roundRect(-8,-40,16,11,4);ctx.fill();
+      ctx.fillStyle='#214a76';ctx.beginPath();ctx.roundRect(-6,-39,12,4,2);ctx.fill();
+      ctx.fillStyle='#dbe8ef';ctx.fillRect(-4,-33,8,2);
+      // compact antenna / fins visible from above, but not face-forward
+      ctx.fillStyle='#e4c14f';ctx.shadowBlur=6;ctx.shadowColor='#ffe080';
+      ctx.beginPath();ctx.moveTo(0,-40);ctx.lineTo(-8,-49);ctx.lineTo(-2,-44);ctx.lineTo(0,-53);ctx.lineTo(2,-44);ctx.lineTo(8,-49);ctx.closePath();ctx.fill();
+      // beam rifle aligned with the forward flight axis, attached to the right side from above
+      if(loadout==='BEAMRIFLE'){
+        ctx.fillStyle='#394957';ctx.shadowBlur=10;ctx.shadowColor='#73e8ff';
+        ctx.beginPath();ctx.moveTo(11,-6);ctx.lineTo(17,-8);ctx.lineTo(23,13);ctx.lineTo(16,16);ctx.closePath();ctx.fill();
+        ctx.fillRect(14,-20,4,15);
+        ctx.fillStyle='#73e8ff';ctx.fillRect(15,-27,2,8);
+      }
+      // funnels orbit a little farther out so the silhouette stays readable
+      if(loadout==='FUNNEL'){
+        const n=6;
+        for(let i=0;i<n;i++){
+          const a=elapsed*.0022+i*Math.PI*2/n;
+          const fx=Math.cos(a)*(42+(i%2)*7), fy=Math.sin(a)*22-4;
+          ctx.save();ctx.translate(fx,fy);ctx.rotate(a+.8);ctx.fillStyle='#bfa6ff';ctx.shadowBlur=12;ctx.shadowColor='#bfa6ff';ctx.beginPath();ctx.moveTo(0,-8);ctx.lineTo(5,4);ctx.lineTo(0,8);ctx.lineTo(-5,4);ctx.closePath();ctx.fill();ctx.restore();
+        }
+      }
+      // photon blade special
+      if(player.specialTime>0){
+        ctx.globalAlpha=.55+.25*pulse;ctx.strokeStyle='#83f4ff';ctx.lineWidth=4;ctx.shadowBlur=24;ctx.shadowColor='#8cf7ff';
+        ctx.beginPath();ctx.moveTo(-24,18);ctx.lineTo(-44,-28);ctx.moveTo(24,18);ctx.lineTo(44,-28);ctx.stroke();ctx.globalAlpha=1;
+      }
+      // leg/backpack thrusters
+      ctx.fillStyle=`rgba(112,238,255,${.65+.25*pulse})`;ctx.shadowBlur=20;ctx.shadowColor='#5be7ff';
+      ctx.beginPath();ctx.moveTo(-14,37);ctx.lineTo(-9,55);ctx.lineTo(-5,38);ctx.closePath();ctx.fill();
+      ctx.beginPath();ctx.moveTo(14,37);ctx.lineTo(9,55);ctx.lineTo(5,38);ctx.closePath();ctx.fill();
+      ctx.restore();
+      ctx.restore();return;
+    }
     if(airframe==='OMEGA'){
       const pulse=.72+.28*Math.sin(elapsed*.012);
       ctx.shadowBlur=28;ctx.shadowColor=player.specialTime>0?'#e8fbff':'#9d73ff';
@@ -2970,7 +3316,7 @@
       }
       ctx.restore();return;
     }
-    const weaponAccent={LASER:'#ff77e8',HOMING:'#78ffab',SPREAD:'#ffb86b',PLASMA:'#67f5ff',RAILGUN:'#c9d7ff',VULCAN:'#ffd66d'};
+    const weaponAccent={LASER:'#ff77e8',HOMING:'#78ffab',SPREAD:'#ffb86b',PLASMA:'#67f5ff',RAILGUN:'#c9d7ff',BEAMRIFLE:'#73e8ff',FUNNEL:'#c9a3ff',VULCAN:'#ffd66d'};
     const accent=weaponAccent[loadout]||'#ffd66d';
     const palettes={
       RAVEN:['#d7fbff','#5e7181','#28323f','#080d14','#efffff','#7ba0b5','#283744'],
@@ -3147,6 +3493,10 @@
       for(const sx of [-1,1]){ ctx.shadowBlur=15;ctx.shadowColor=accent;ctx.fillStyle='#253642';ctx.beginPath();ctx.arc(sx*22,1,7,0,Math.PI*2);ctx.fill();ctx.fillStyle=accent;ctx.beginPath();ctx.arc(sx*22,0,3.2,0,Math.PI*2);ctx.fill(); }
     } else if(loadout==='RAILGUN'){
       ctx.fillStyle='#3a4659';ctx.fillRect(-3,-48,6,44);ctx.fillStyle=accent;ctx.fillRect(-1,-52,2,48);ctx.fillRect(-20,-3,3,16);ctx.fillRect(17,-3,3,16);
+    } else if(loadout==='BEAMRIFLE'){
+      ctx.fillStyle='#344659';ctx.fillRect(19,-18,6,34);ctx.fillRect(22,-32,3,18);ctx.fillStyle=accent;ctx.fillRect(23,-35,1.8,10);
+    } else if(loadout==='FUNNEL'){
+      for(const sx of [-1,1]) for(const yy of [-10,5]){ ctx.fillStyle='#423f63';ctx.beginPath();ctx.roundRect(sx*24-3,yy,6,14,2);ctx.fill();ctx.fillStyle=accent;ctx.fillRect(sx*24-1,yy-3,2,5); }
     } else {
       // four missile canisters under the wings
       const missileGrad=ctx.createLinearGradient(0,-8,0,17);
@@ -3529,7 +3879,7 @@
 
   function draw(){
     ctx.save();
-    const sx=(Math.random()-.5)*shake, sy=(Math.random()-.5)*shake;ctx.translate(sx,sy);
+    const visualShake=gameOptions.shake?shake:0; const sx=(Math.random()-.5)*visualShake, sy=(Math.random()-.5)*visualShake;ctx.translate(sx,sy);
     const bg=ctx.createLinearGradient(0,0,0,H);
     if(stage===1){
       bg.addColorStop(0,'#061128');bg.addColorStop(.5,'#020817');bg.addColorStop(1,'#05020f');
@@ -3864,6 +4214,7 @@
   stickZone.addEventListener('pointercancel',resetJoy);
   bombBtn.addEventListener('pointerdown',e=>{e.preventDefault();useBomb();});
   specialBtn.addEventListener('pointerdown',e=>{e.preventDefault();useSpecial();});
+  transformBtn.addEventListener('pointerdown',e=>{e.preventDefault();transformValkyrie();});
   soundBtn.addEventListener('click',e=>{e.preventDefault(); setSound(!soundOn);});
   pauseBtn.addEventListener('click',e=>{e.preventDefault(); togglePause();});
   resumeBtn.addEventListener('click',e=>{e.preventDefault(); resumeGame();});
@@ -3878,6 +4229,7 @@
     if((e.code==='Escape'||e.code==='KeyP') && !e.repeat){ e.preventDefault(); togglePause(); return; }
     if(e.code==='Space')useBomb();
     if(e.code==='ShiftLeft'||e.code==='ShiftRight')useSpecial();
+    if(e.code==='KeyX')transformValkyrie();
   });
   addEventListener('keyup',e=>keys[e.code]=false);
   setInterval(()=>{
@@ -3925,6 +4277,15 @@
   });
   gameStartBtn.addEventListener('click',()=>showMenuScreen('difficulty'));
   recordsBtn.addEventListener('click',()=>showMenuScreen('records'));
+  optionsBtn.addEventListener('click',()=>showMenuScreen('options'));
+  optionsBackBtn.addEventListener('click',()=>{ persistOptions(); showMenuScreen('title'); });
+  optionBtns.forEach(btn=>btn.addEventListener('click',()=>{
+    const k=btn.dataset.option,v=btn.dataset.value;
+    if(k==='density' && ['LOW','NORMAL','HIGH'].includes(v)) gameOptions.density=v;
+    if(k==='control' && ['SOFT','NORMAL','FAST'].includes(v)) gameOptions.control=v;
+    if(k==='shake') gameOptions.shake=v==='ON';
+    persistOptions(); refreshOptionsUI();
+  }));
   recordsBackBtn.addEventListener('click',()=>showMenuScreen('title'));
   difficultyBackBtn.addEventListener('click',()=>showMenuScreen('title'));
   difficultyNextBtn.addEventListener('click',()=>showMenuScreen('stage'));
