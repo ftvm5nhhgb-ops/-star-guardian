@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="STAR GUARDIAN" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Crect width=%27512%27 height=%27512%27 rx=%27110%27 fill=%27%23020713%27/%3E%3Cpath d=%27M256 70 310 194 420 240 320 280 288 440 256 382 224 440 192 280 92 240 202 194Z%27 fill=%27%2375ddff%27 stroke=%27white%27 stroke-width=%278%27/%3E%3Ccircle cx=%27256%27 cy=%27256%27 r=%2722%27 fill=%27white%27/%3E%3C/svg%3E" />
-<title>STAR GUARDIAN // VERSION 1.6.1</title>
+<title>STAR GUARDIAN // VERSION 1.7.0</title>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -221,6 +221,15 @@
   .tacticalPreview .walkerHead::before,.tacticalPreview .walkerHead::after { content:""; position:absolute; bottom:-15px; width:4px; height:16px; background:#47545e; }
   .tacticalPreview .walkerHead::before { left:6px; transform:rotate(11deg); }
   .tacticalPreview .walkerHead::after { right:6px; transform:rotate(-11deg); }
+  .skyFortressPreview { background:linear-gradient(#77bde8 0 26%,#c7ebff 45%,#f7fbff 55%,#7898bc 56%,#1c2c44 100%); }
+  .skyFortressPreview .cloudDeck { position:absolute; left:-12px; right:-12px; top:27px; height:24px; background:radial-gradient(ellipse at 20% 60%,#fff 0 24%,transparent 25%),radial-gradient(ellipse at 50% 50%,#e9f7ff 0 28%,transparent 29%),radial-gradient(ellipse at 82% 65%,#fff 0 24%,transparent 25%); opacity:.86; }
+  .skyFortressPreview .fortressSil { position:absolute; left:50%; bottom:9px; width:78px; height:30px; margin-left:-39px; background:linear-gradient(#536b82,#172535); clip-path:polygon(50% 0,66% 22%,96% 35%,83% 68%,64% 70%,58% 100%,42% 100%,36% 70%,17% 68%,4% 35%,34% 22%); box-shadow:0 0 12px rgba(102,215,255,.3); }
+  .lunarPreview { background:radial-gradient(circle at 78% 18%,#e9edf1 0 11%,#8f969f 12% 18%,transparent 19%),linear-gradient(#03050b 0 45%,#151923 46%,#5d6269 100%); }
+  .lunarPreview .moonGrid { position:absolute; inset:36px 0 0; background:linear-gradient(90deg,transparent 0 48%,rgba(170,220,255,.18) 49% 51%,transparent 52%),linear-gradient(rgba(180,220,255,.12) 1px,transparent 1px); background-size:38px 100%,100% 14px; transform:perspective(70px) rotateX(25deg); transform-origin:top; }
+  .lunarPreview .colossusSil { position:absolute; left:50%; bottom:9px; width:30px; height:34px; margin-left:-15px; background:linear-gradient(#c8d5df,#33485e); clip-path:polygon(40% 0,60% 0,66% 18%,88% 30%,78% 52%,67% 45%,74% 100%,55% 82%,50% 55%,45% 82%,26% 100%,33% 45%,22% 52%,12% 30%,34% 18%); box-shadow:0 0 10px rgba(132,211,255,.28); }
+  .zeroFrontierPreview { background:radial-gradient(circle at 50% 44%,rgba(255,91,138,.32),transparent 22%),linear-gradient(#05020c,#19051c 54%,#07030a); }
+  .zeroFrontierPreview .zeroCore { position:absolute; left:50%; top:13px; width:48px; height:48px; margin-left:-24px; border-radius:50%; border:5px solid rgba(255,121,164,.7); box-shadow:0 0 18px rgba(255,73,128,.55),inset 0 0 16px rgba(255,255,255,.1); }
+  .zeroFrontierPreview .zeroCore::after { content:""; position:absolute; inset:10px; border-radius:50%; background:#fff; box-shadow:0 0 16px #ff5c93; }
   #stealthHud { position:fixed; left:50%; top:max(126px, calc(env(safe-area-inset-top) + 118px)); transform:translateX(-50%); z-index:9; width:min(260px,58vw); display:none; pointer-events:none; padding:7px 10px 8px; border-radius:10px; border:1px solid rgba(165,211,239,.28); background:rgba(5,12,18,.76); backdrop-filter:blur(5px); box-shadow:0 8px 28px rgba(0,0,0,.28); }
   #stealthHud .stealthHead { display:flex; align-items:center; justify-content:space-between; font-size:8px; font-weight:1000; letter-spacing:.13em; color:#cfeaff; }
   #stealthState { font-size:10px; color:#8fffd0; text-shadow:0 0 10px rgba(90,255,194,.35); }
@@ -396,7 +405,7 @@
     <div class="titleEyebrow">TACTICAL STRIKE SHOOTER</div>
     <div class="title"><span class="small">PROJECT</span>STAR<br>GUARDIAN</div>
     <div class="titleSubline">HIGH-SPEED ASSAULT / VARIABLE FRAMES / ELITE PILOT PROTOCOL</div>
-    <div class="versionTag">VERSION 1.6.1 // TITANIUM TITLE REWORK</div>
+    <div class="versionTag">VERSION 1.7.0 // FINAL WAR ARC</div>
   </div>
 
   <section id="titleScreen" class="menuScreen active">
@@ -515,6 +524,18 @@
       <button class="stageBtn" data-stage="9">
         <div class="stageThumb tacticalPreview"><i class="searchLight"></i><i class="hangarDeck"></i><i class="walkerHead"></i><i class="previewShip"></i></div>
         <span class="stageName">STAGE 9<span>TACTICAL SHADOW BASE / 潜入核基地</span></span>
+      </button>
+      <button class="stageBtn" data-stage="10">
+        <div class="stageThumb skyFortressPreview"><i class="cloudDeck"></i><i class="fortressSil"></i><i class="previewShip"></i></div>
+        <span class="stageName">STAGE 10<span>SKY FORTRESS / 雲上空中要塞</span></span>
+      </button>
+      <button class="stageBtn" data-stage="11">
+        <div class="stageThumb lunarPreview"><i class="moonGrid"></i><i class="colossusSil"></i><i class="previewShip"></i></div>
+        <span class="stageName">STAGE 11<span>LUNAR WARZONE / 月面戦争</span></span>
+      </button>
+      <button class="stageBtn" data-stage="12">
+        <div class="stageThumb zeroFrontierPreview"><i class="zeroCore"></i><i class="previewShip"></i></div>
+        <span class="stageName">STAGE 12<span>ZERO FRONTIER / 最終宇宙要塞</span></span>
       </button>
     </div>
     <div class="menuBtnRow"><button id="stageBackBtn" class="menuBack">BACK</button><button id="stageNextBtn" class="menuNext">NEXT / HANGAR</button></div>
@@ -640,7 +661,7 @@
   const airframeBtns = [...document.querySelectorAll('.airframeBtn')];
   const supportBtns = [...document.querySelectorAll('.supportBtn')];
   const OPTIONS_KEY='starGuardianOptionsV1';
-  const GAME_VERSION='1.6.1';
+  const GAME_VERSION='1.7.0';
   const DENSITY_PROFILES={
     LOW:{waveDensity:.58,spawnGap:1.42,groundGap:1.34,reinforceGap:1.40},
     NORMAL:{waveDensity:1,spawnGap:1,groundGap:1,reinforceGap:1},
@@ -699,7 +720,7 @@
   }
   function blankSave(){
     const ranks={};
-    for(const d of ['VERY_EASY','EASY','NORMAL','HARD','NIGHTMARE']) ranks[d]=Array(10).fill('');
+    for(const d of ['VERY_EASY','EASY','NORMAL','HARD','NIGHTMARE']) ranks[d]=Array(13).fill('');
     return {version:2,highScore:0,highestClearedStage:0,playCount:0,allClearCount:0,pilotExp:0,ranks};
   }
   function loadSave(){
@@ -708,12 +729,12 @@
       const raw=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');
       if(!raw||typeof raw!=='object') return fresh;
       fresh.highScore=Math.max(0,Number(raw.highScore)||0);
-      fresh.highestClearedStage=Math.max(0,Math.min(9,Number(raw.highestClearedStage)||0));
+      fresh.highestClearedStage=Math.max(0,Math.min(12,Number(raw.highestClearedStage)||0));
       fresh.playCount=Math.max(0,Number(raw.playCount)||0);
       fresh.allClearCount=Math.max(0,Number(raw.allClearCount)||0);
       fresh.pilotExp=Math.max(0,Math.min(expForLevel(PILOT_MAX_LEVEL),Number(raw.pilotExp)||0));
       for(const d of ['VERY_EASY','EASY','NORMAL','HARD','NIGHTMARE']){
-        if(raw.ranks&&Array.isArray(raw.ranks[d])) for(let s=1;s<=9;s++){
+        if(raw.ranks&&Array.isArray(raw.ranks[d])) for(let s=1;s<=12;s++){
           const r=raw.ranks[d][s]; if(RANK_VALUE[r]) fresh.ranks[d][s]=r;
         }
       }
@@ -787,7 +808,7 @@
     titleHighScore.textContent=hs; titleMaxStage.textContent=max; titlePlayCount.textContent=saveData.playCount;
     recordsHighScore.textContent=hs; recordsMaxStage.textContent=max; recordsPlayCount.textContent=saveData.playCount; recordsAllClear.textContent=saveData.allClearCount;
     recordsBody.innerHTML='';
-    for(let s=1;s<=9;s++){
+    for(let s=1;s<=12;s++){
       const tr=document.createElement('tr');
       const cells=['STAGE '+s,...['VERY_EASY','EASY','NORMAL','HARD','NIGHTMARE'].map(d=>saveData.ranks[d][s]||'—')];
       cells.forEach((v,i)=>{ const td=document.createElement('td'); td.textContent=v; if(i>0) td.className=v==='—'?'rankNone':'rank'+v; tr.appendChild(td); });
@@ -1037,9 +1058,9 @@
   }
 
   function stageMusicMode(){
-    return stage===9?'stage9':(stage===8?'stage8':(stage===7?'stage7':(stage===6?'stage6':(stage===5?'stage5':(stage===4?'stage4':(stage===3?'stage3':(stage===2?'stage2':'stage')))))));
+    return stage>=10?'stage'+stage:(stage===9?'stage9':(stage===8?'stage8':(stage===7?'stage7':(stage===6?'stage6':(stage===5?'stage5':(stage===4?'stage4':(stage===3?'stage3':(stage===2?'stage2':'stage'))))))));
   }
-  function isMidBossKind(kind){ return kind==='mid'||kind==='mid4'||kind==='mid5'||kind==='mid6'||kind==='mid7'||kind==='mid8'||kind==='mid9'; }
+  function isMidBossKind(kind){ return kind==='mid'||kind==='mid4'||kind==='mid5'||kind==='mid6'||kind==='mid7'||kind==='mid8'||kind==='mid9'||kind==='mid10'||kind==='mid11'||kind==='mid12'; }
   function setSound(on){
     soundOn=on;
     ensureAudio();
@@ -1190,7 +1211,10 @@
     6:{name:'OPERATION NIGHT MEGACITY',area:'NOCTIS BLOCK // MEGACITY',primary:'夜間都市の制空権を奪取せよ。',secondary:'高速迎撃機を排除。',threat:'EXTREME',hostile:'NEON FORTRESS'},
     7:{name:'OPERATION MOTHERSHIP HUNT',area:'DREAD DOCK // OUTER HULL',primary:'敵母艦へ強襲し、中枢へ到達せよ。',secondary:'外殻防衛兵器を破壊。',threat:'EXTREME',hostile:'OBLIVION CORE'},
     8:{name:'OPERATION FINAL CORE',area:'GENESIS CORE // REACTOR SHAFT',primary:'暴走炉心を破壊し、崩壊前に脱出せよ。',secondary:'PHASE 2移行に備えろ。',threat:'MAXIMUM',hostile:'GENESIS REACTOR'},
-    9:{name:'OPERATION SHADOW SPEAR',area:'BLACKSITE 09 // TACTICAL SHADOW BASE',primary:'敵基地へ潜入し、最終兵器の起動を阻止せよ。',secondary:'監視カメラ4基破壊 / ALERT回避で秘密ルートを確保。',threat:'SPECIAL OPS',hostile:'GUNSHIP WYVERN / SENTINEL-04 ARBITER'}
+    9:{name:'OPERATION SHADOW SPEAR',area:'BLACKSITE 09 // TACTICAL SHADOW BASE',primary:'敵基地へ潜入し、最終兵器の起動を阻止せよ。',secondary:'監視カメラ4基破壊 / ALERT回避で秘密ルートを確保。',threat:'SPECIAL OPS',hostile:'GUNSHIP WYVERN / SENTINEL-04 ARBITER'},
+    10:{name:'OPERATION SKY FORTRESS',area:'STRATOSPHERE // TEMPEST BELT',primary:'雲上要塞群を突破し、空中戦艦中枢を破壊せよ。',secondary:'高速エース機と対空砲火に警戒。',threat:'EXTREME+',hostile:'RAPTOR KNIGHT / TEMPEST ARK'},
+    11:{name:'OPERATION LUNAR WARZONE',area:'LUNA FRONT // COPERNICUS GRID',primary:'月面戦線を突破し、重力砲陣地を無力化せよ。',secondary:'敵人型兵器部隊との近接戦に備えろ。',threat:'MAXIMUM',hostile:'ECLIPSE LANCER / LUNAR COLOSSUS'},
+    12:{name:'OPERATION ZERO FRONTIER',area:'ZERO CITADEL // OUTER VOID',primary:'敵最終要塞へ突入し、NEMESIS GENESISを完全破壊せよ。',secondary:'三段階変形を確認。全フェーズ撃破後、脱出せよ。',threat:'OMEGA',hostile:'OMEGA SERAPH / NEMESIS GENESIS'}
   };
   let radioTimer=null;
   function updateBriefing(){
@@ -1224,16 +1248,19 @@
       6:['NIGHT WATCH','メガシティ空域へ侵入。高速迎撃機が来る。'],
       7:['STRIKE CONTROL','敵母艦に取り付く。外殻火器を破壊しろ。'],
       8:['CORE CONTROL','最終中枢だ。炉心破壊後は即時離脱。'],
-      9:['GHOST-1','Shadow Base ahead. 監視網に見つかるな。']
+      9:['GHOST-1','Shadow Base ahead. 監視網に見つかるな。'],
+      10:['SKY CONTROL','成層圏へ上昇。空中要塞群が進路を塞いでいる。'],
+      11:['LUNA CONTROL','月面戦域へ進入。低重力域でも敵火力は落ちない。'],
+      12:['FINAL CONTROL','Zero Citadel確認。これが最後の攻撃だ。']
     }[stageNo]||['OPS','Mission start.'];
     setTimeout(()=>{if(running && stage===stageNo) showRadio(lines[0],lines[1],2800,stageNo===9?'STEALTH COMMS':'TACTICAL NET');},550);
   }
   function bossRadio(stageNo){
-    const msgs={1:'敵旗艦接近。全武装を集中しろ。',2:'海上要塞を確認。主砲に注意。',3:'防衛コア出現。外装から剥がせ。',4:'Inferno Carrier出現。熱源急上昇。',5:'Glacier Citadel確認。',6:'Neon Fortress出現。高速弾幕に注意。',7:'Oblivion Core起動。',8:'Genesis Reactor覚醒。',9:'SENTINEL-04 ARBITERを確認。ミサイルポッドと脚部を破壊し、AI中枢を露出させろ。'};
+    const msgs={1:'敵旗艦接近。全武装を集中しろ。',2:'海上要塞を確認。主砲に注意。',3:'防衛コア出現。外装から剥がせ。',4:'Inferno Carrier出現。熱源急上昇。',5:'Glacier Citadel確認。',6:'Neon Fortress出現。高速弾幕に注意。',7:'Oblivion Core起動。',8:'Genesis Reactor覚醒。',9:'SENTINEL-04 ARBITERを確認。ミサイルポッドと脚部を破壊し、AI中枢を露出させろ。',10:'TEMPEST ARK接近。艦体ハードポイントを順番に破壊しろ。',11:'LUNAR COLOSSUS起動。人型決戦兵器だ、正面火力に注意。',12:'NEMESIS GENESIS確認。戦艦・人型・コアの三段階変形に備えろ。'};
     showRadio('OPS',msgs[stageNo]||'Boss target approaching.',3000,'BOSS LINK');
   }
   function midBossRadio(stageNo){
-    const msgs={2:'RAVEN-X接近。編隊を崩されるな。',4:'MOLTEN WYVERN接近。',5:'FROST FANG接近。',6:'PHANTOM RAVEN接近。',7:'DOCK GUARDIAN接近。',8:'CORE WARDEN接近。',9:'Gunship Wyvern launched. 追跡される前に落とせ。'};
+    const msgs={2:'RAVEN-X接近。編隊を崩されるな。',4:'MOLTEN WYVERN接近。',5:'FROST FANG接近。',6:'PHANTOM RAVEN接近。',7:'DOCK GUARDIAN接近。',8:'CORE WARDEN接近。',9:'Gunship Wyvern launched. 追跡される前に落とせ。',10:'RAPTOR KNIGHT接近。超高速エース機だ。',11:'ECLIPSE LANCER接近。月面仕様の人型機を確認。',12:'OMEGA SERAPH接近。最終防衛エースだ。'};
     if(msgs[stageNo]) showRadio('OPS',msgs[stageNo],2700,stageNo===9?'ALERT CH':'TACTICAL NET');
   }
 
@@ -1289,7 +1316,7 @@
     saveStageRecord(stageNo,rank,finalMission);
     resultEyebrow.textContent=finalMission?'MISSION COMPLETE':'STAGE CLEAR';
     resultTitle.textContent=finalMission?'FINAL RESULT':'MISSION RESULT';
-    resultStageEl.textContent='STAGE '+stageNo+' / '+(['','ORBITAL RAID','OCEAN BREAKER','CITY SIEGE','VOLCANIC FRONT','ARCTIC BASE','NIGHT MEGACITY','ENEMY MOTHERSHIP','FINAL CORE ESCAPE','TACTICAL SHADOW BASE'][stageNo]||'')+' • '+selectedDifficulty+' • SCORE ×'+currentDifficulty().score.toFixed(2);
+    resultStageEl.textContent='STAGE '+stageNo+' / '+(['','ORBITAL RAID','OCEAN BREAKER','CITY SIEGE','VOLCANIC FRONT','ARCTIC BASE','NIGHT MEGACITY','ENEMY MOTHERSHIP','FINAL CORE ESCAPE','TACTICAL SHADOW BASE','SKY FORTRESS','LUNAR WARZONE','ZERO FRONTIER'][stageNo]||'')+' • '+selectedDifficulty+' • SCORE ×'+currentDifficulty().score.toFixed(2);
     resultScore.textContent=String(gained).padStart(7,'0');
     resultDestroy.textContent=String(stageDestroyCount);
     resultParts.textContent=stagePartsDestroyed+' / 5';
@@ -1327,7 +1354,7 @@
     paused=false; gameOver=false; clearGameOverTimers();
     pauseScreen.classList.remove('show'); gameOverScreen.classList.remove('show');
     input.x=0; input.y=0; resetJoy();
-    stageTime=0; spawnTimer=stage===1?.8:(stage===2?.65:(stage===3?.58:(stage===4?.52:(stage===5?.48:(stage===6?.44:(stage===7?.40:(stage===8?.36:.34))))))); 
+    stageTime=0; spawnTimer=({1:.8,2:.65,3:.58,4:.52,5:.48,6:.44,7:.40,8:.36,9:.34,10:.31,11:.29,12:.27}[stage]||.8); 
     bossSpawned=false; midbossSpawned=false; midbossDefeated=false; stageTransition=false;
     escapeMode=false; escapeTimer=0; escapeSpawn=0; escapeLastSec=-1;
     coreCutin.classList.remove('show');
@@ -1342,7 +1369,10 @@
     else if(stage===6){ sceneryTimer=.27; groundTimer=.50; showMessage('STAGE 6 / NIGHT MEGACITY',1400); switchMusic('stage6'); }
     else if(stage===7){ sceneryTimer=.23; groundTimer=.44; showMessage('STAGE 7 / ENEMY MOTHERSHIP',1500); switchMusic('stage7'); }
     else if(stage===8){ sceneryTimer=.19; groundTimer=.38; showMessage('STAGE 8 / FINAL CORE ESCAPE',1600); switchMusic('stage8'); }
-    else { sceneryTimer=.18; groundTimer=.72; resetTacticalSecurity(); showMessage('STAGE 9 / TACTICAL SHADOW BASE',1650); switchMusic('stage9'); }
+    else if(stage===9){ sceneryTimer=.18; groundTimer=.72; resetTacticalSecurity(); showMessage('STAGE 9 / TACTICAL SHADOW BASE',1650); switchMusic('stage9'); }
+    else if(stage===10){ sceneryTimer=.16; groundTimer=.52; stealthHud.style.display='none'; showMessage('STAGE 10 / SKY FORTRESS',1700); switchMusic('stage10'); }
+    else if(stage===11){ sceneryTimer=.15; groundTimer=.48; stealthHud.style.display='none'; showMessage('STAGE 11 / LUNAR WARZONE',1750); switchMusic('stage11'); }
+    else { sceneryTimer=.14; groundTimer=.44; stealthHud.style.display='none'; showMessage('STAGE 12 / ZERO FRONTIER',1800); switchMusic('stage12'); }
     bossWrap.style.display='none'; updateHud(); updateSpecialUI(); last=performance.now();
   }
 
@@ -1395,7 +1425,7 @@
   }
 
   function resetGame(startAtStage=1){
-    running=true; gameOver=false; paused=false; continuesLeft=3; clearGameOverTimers(); last=performance.now(); elapsed=0; stageTime=0; score=0; spawnTimer=0; bossSpawned=false; stage=Math.max(1,Math.min(9,startAtStage)); midbossSpawned=false; midbossDefeated=false; stageTransition=false; escapeMode=false; escapeTimer=0; escapeSpawn=0; escapeLastSec=-1;
+    running=true; gameOver=false; paused=false; continuesLeft=3; clearGameOverTimers(); last=performance.now(); elapsed=0; stageTime=0; score=0; spawnTimer=0; bossSpawned=false; stage=Math.max(1,Math.min(12,startAtStage)); midbossSpawned=false; midbossDefeated=false; stageTransition=false; escapeMode=false; escapeTimer=0; escapeSpawn=0; escapeLastSec=-1;
     pauseScreen.classList.remove('show'); gameOverScreen.classList.remove('show'); pauseBtn.style.display='block';
     coreCutin.classList.remove('show');
     bullets=[]; enemyBullets=[]; enemies=[]; particles=[]; powerups=[]; scenery=[]; groundTargets=[]; boss=null;
@@ -1435,8 +1465,14 @@
       sceneryTimer=.24; groundTimer=.46; showMessage('STAGE 7 / ENEMY MOTHERSHIP',1500); startMusic('stage7');
     } else if(stage===8) {
       sceneryTimer=.20; groundTimer=.40; showMessage('STAGE 8 / FINAL CORE ESCAPE',1600); startMusic('stage8');
-    } else {
+    } else if(stage===9) {
       sceneryTimer=.18; groundTimer=.72; resetTacticalSecurity(); showMessage('STAGE 9 / TACTICAL SHADOW BASE',1650); startMusic('stage9');
+    } else if(stage===10) {
+      sceneryTimer=.16; groundTimer=.52; stealthHud.style.display='none'; showMessage('STAGE 10 / SKY FORTRESS',1700); startMusic('stage10');
+    } else if(stage===11) {
+      sceneryTimer=.15; groundTimer=.48; stealthHud.style.display='none'; showMessage('STAGE 11 / LUNAR WARZONE',1750); startMusic('stage11');
+    } else {
+      sceneryTimer=.14; groundTimer=.44; stealthHud.style.display='none'; showMessage('STAGE 12 / ZERO FRONTIER',1800); startMusic('stage12');
     }
 
     updateHud(); bossWrap.style.display='none';
@@ -1762,7 +1798,10 @@
       neonTower:{w:120,h:160,color:'#11172f',accent:'#65edff'},
       hullSpire:{w:138,h:112,color:'#1c2d40',accent:'#74ffd9'},
       reactorWall:{w:146,h:126,color:'#321922',accent:'#ff647a'},
-      blacksite:{w:156,h:94,color:'#1a232a',accent:'#99c7e8'}
+      blacksite:{w:156,h:94,color:'#1a232a',accent:'#99c7e8'},
+      skyFortress:{w:174,h:92,color:'#31485f',accent:'#b9f4ff'},
+      lunarBase:{w:160,h:86,color:'#555e69',accent:'#b8dfff'},
+      zeroSpire:{w:164,h:132,color:'#24102c',accent:'#ff6f9e'}
     }[type];
     scenery.push({
       type,
@@ -1807,10 +1846,10 @@
       secretCache:{r:18,hp:4,pts:3200,vy:48,shoot:99}
     }[pick];
     const d=currentDifficulty();
-    const boost=({3:1.30,4:1.48,5:1.64,6:1.82,7:2.02,8:2.25,9:2.46}[stage]||1)*d.hp;
-    const stagePts=({3:1.35,4:1.55,5:1.72,6:1.92,7:2.18,8:2.45,9:2.66}[stage]||1)*d.score;
+    const boost=({3:1.30,4:1.48,5:1.64,6:1.82,7:2.02,8:2.25,9:2.46,10:2.66,11:2.88,12:3.12}[stage]||1)*d.hp;
+    const stagePts=({3:1.35,4:1.55,5:1.72,6:1.92,7:2.18,8:2.45,9:2.66,10:2.92,11:3.18,12:3.48}[stage]||1)*d.score;
     const shooter=(pick==='battery'||pick==='magmaTurret'||pick==='lavaTank'||pick==='frostBattery'||pick==='snowCrawler'||pick==='neonBattery'||pick==='roofTank'||pick==='phaseTurret'||pick==='coreVent'||pick==='laserGate'||pick==='defensePylon'||pick==='samBattery'||pick==='armoredPatrol');
-    const shootValue=!shooter ? data.shoot : stage===9?rnd(.22,.40):stage===8?rnd(.25,.47):stage===7?rnd(.30,.54):stage===6?rnd(.36,.62):stage===5?rnd(.42,.72):stage===4?rnd(.48,.82):stage===3?rnd(.52,.95):data.shoot;
+    const shootValue=!shooter ? data.shoot : stage>=12?rnd(.17,.31):stage===11?rnd(.18,.33):stage===10?rnd(.20,.36):stage===9?rnd(.22,.40):stage===8?rnd(.25,.47):stage===7?rnd(.30,.54):stage===6?rnd(.36,.62):stage===5?rnd(.42,.72):stage===4?rnd(.48,.82):stage===3?rnd(.52,.95):data.shoot;
     const target={type:pick,x:rnd(38,W-38),y:-38,t:0,flash:0,...data,hp:Math.ceil(data.hp*boost),pts:Math.round(data.pts*stagePts),vy:data.vy*d.enemySpeed,shoot:shootValue};
     if(pick==='laserSensor'){target.x=W/2;target.gapX=rnd(90,W-90);target.gapW=82;target.triggered=false;}
     if(pick==='securityCam'){target.phase=rnd(0,Math.PI*2);target.camAngle=Math.PI/2;}
@@ -2001,6 +2040,24 @@
     heavyLifter:{r:33,hp:30,spd:78,pts:1580,color:'#8897a9',move:'heavy',attack:'missileFan',heavy:true},
     sentryUAV:{r:22,hp:16,spd:116,pts:820,color:'#d4e4f0',move:'orbit',attack:'rapid',heavy:false},
 
+    // STAGE 10 / SKY FORTRESS
+    stratoFighter:{r:17,hp:10,spd:170,pts:470,color:'#c9f3ff',move:'weave',attack:'aim',heavy:false},
+    cloudDart:{r:14,hp:8,spd:214,pts:420,color:'#8edfff',move:'zigzag',attack:'burst',heavy:false},
+    fortressGunship:{r:34,hp:34,spd:82,pts:1760,color:'#8da8bc',move:'heavy',attack:'missileFan',heavy:true},
+    stormDrone:{r:21,hp:18,spd:126,pts:900,color:'#dffaff',move:'orbit',attack:'rapid',heavy:false},
+
+    // STAGE 11 / LUNAR WARZONE
+    lunarFighter:{r:17,hp:11,spd:176,pts:520,color:'#d7e4ef',move:'glide',attack:'aim',heavy:false},
+    moonBlade:{r:15,hp:9,spd:222,pts:470,color:'#a7cfff',move:'blade',attack:'burst',heavy:false},
+    regolithBomber:{r:35,hp:38,spd:84,pts:1920,color:'#8f98a4',move:'heavy',attack:'missileFan',heavy:true},
+    gravityDrone:{r:22,hp:20,spd:132,pts:980,color:'#b7d6ff',move:'warp',attack:'rapid',heavy:false},
+
+    // STAGE 12 / ZERO FRONTIER
+    zeroFighter:{r:18,hp:12,spd:184,pts:580,color:'#ff8db5',move:'coreRush',attack:'aim',heavy:false},
+    seraphDrone:{r:15,hp:10,spd:232,pts:520,color:'#ffd0df',move:'reactor',attack:'burst',heavy:false},
+    genesisCruiser:{r:36,hp:42,spd:88,pts:2140,color:'#b65378',move:'heavy',attack:'missileFan',heavy:true},
+    omegaBlade:{r:23,hp:22,spd:138,pts:1100,color:'#ff6f9d',move:'pulse',attack:'rapid',heavy:false},
+
     aceMech:{r:25,hp:34,spd:82,pts:2400,color:'#ff516f',move:'ace',attack:'aceBurst',heavy:true}
   };
 
@@ -2012,9 +2069,9 @@
       if(data.heavy){ if(gameOptions.density==='LOW' && Math.random()>.66) return; }
       else if(Math.random()>Math.min(1,(d.density??1)*profile.waveDensity)) return;
     }
-    const tough=(stage===9?2.52:(stage===8?2.28:(stage===7?2.05:(stage===6?1.86:(stage===5?1.68:(stage===4?1.52:(stage===3?1.38:(stage===2?1.22:1))))))))*d.hp;
-    const fast=(stage===9?1.38:(stage===8?1.34:(stage===7?1.30:(stage===6?1.26:(stage===5?1.22:(stage===4?1.19:(stage===3?1.16:(stage===2?1.10:1))))))))*d.enemySpeed;
-    const ptsMul=(stage===9?2.8:(stage===8?2.5:(stage===7?2.2:(stage===6?1.94:(stage===5?1.72:(stage===4?1.55:(stage===3?1.35:(stage===2?1.2:1))))))))*d.score;
+    const tough=({1:1,2:1.22,3:1.38,4:1.52,5:1.68,6:1.86,7:2.05,8:2.28,9:2.52,10:2.72,11:2.94,12:3.18}[stage]||1)*d.hp;
+    const fast=({1:1,2:1.10,3:1.16,4:1.19,5:1.22,6:1.26,7:1.30,8:1.34,9:1.38,10:1.42,11:1.46,12:1.50}[stage]||1)*d.enemySpeed;
+    const ptsMul=({1:1,2:1.2,3:1.35,4:1.55,5:1.72,6:1.94,7:2.2,8:2.5,9:2.8,10:3.05,11:3.32,12:3.65}[stage]||1)*d.score;
     enemies.push({type,x,y,phase,t:0,shoot:rnd(.5,1.8),...data,hp:Math.ceil(data.hp*tough),spd:data.spd*fast,pts:Math.round(data.pts*ptsMul)});
   }
 
@@ -2075,6 +2132,36 @@
         spawnEnemy('missileBoat',W/2,-58,0);
         for(let i=0;i<6;i++) spawnEnemy('navalDrone',W/2+(i-2.5)*52,-105-i*18,i*.4);
       }
+      return;
+    }
+
+    if(stage===12){
+      if(choice===0){ for(let i=0;i<10;i++) spawnEnemy('zeroFighter',34+i*50,-48-i*17,i*.38); }
+      else if(choice===1){ for(let i=0;i<11;i++) spawnEnemy('seraphDrone',i%2?64:W-64,-50-i*22,i*.58); }
+      else if(choice===2){ spawnEnemy('genesisCruiser',W/2,-72,0); for(let i=0;i<7;i++) spawnEnemy('zeroFighter',W/2+(i-3)*45,-132-i*19,i*.30); }
+      else if(choice===3){ for(let i=0;i<8;i++) spawnEnemy('omegaBlade',36+i*58,-58-i*23,i*.42); }
+      else if(choice===4){ spawnEnemy('genesisCruiser',W*.27,-78,.2); spawnEnemy('genesisCruiser',W*.73,-128,.9); for(let i=0;i<6;i++) spawnEnemy('seraphDrone',W/2+(i-2.5)*47,-168-i*18,i*.40); }
+      else { for(let i=0;i<6;i++){ spawnEnemy('zeroFighter',56,-58-i*36,i*.38); spawnEnemy('omegaBlade',W-56,-74-i*36,i*.38+.22); } }
+      return;
+    }
+
+    if(stage===11){
+      if(choice===0){ for(let i=0;i<10;i++) spawnEnemy('lunarFighter',36+i*51,-46-i*18,i*.40); }
+      else if(choice===1){ for(let i=0;i<10;i++) spawnEnemy('moonBlade',i%2?68:W-68,-48-i*24,i*.62); }
+      else if(choice===2){ spawnEnemy('regolithBomber',W/2,-70,0); for(let i=0;i<6;i++) spawnEnemy('lunarFighter',W/2+(i-2.5)*50,-126-i*21,i*.34); }
+      else if(choice===3){ for(let i=0;i<8;i++) spawnEnemy('gravityDrone',39+i*57,-54-i*23,i*.44); }
+      else if(choice===4){ spawnEnemy('regolithBomber',W*.28,-76,.2); spawnEnemy('regolithBomber',W*.72,-124,.9); }
+      else { for(let i=0;i<5;i++){ spawnEnemy('moonBlade',60,-58-i*38,i*.4); spawnEnemy('lunarFighter',W-60,-76-i*38,i*.4+.24); } }
+      return;
+    }
+
+    if(stage===10){
+      if(choice===0){ for(let i=0;i<9;i++) spawnEnemy('stratoFighter',40+i*54,-45-i*18,i*.40); }
+      else if(choice===1){ for(let i=0;i<9;i++) spawnEnemy('cloudDart',i%2?70:W-70,-48-i*25,i*.64); }
+      else if(choice===2){ spawnEnemy('fortressGunship',W/2,-68,0); for(let i=0;i<6;i++) spawnEnemy('stratoFighter',W/2+(i-2.5)*52,-122-i*22,i*.36); }
+      else if(choice===3){ for(let i=0;i<7;i++) spawnEnemy('stormDrone',42+i*65,-52-i*24,i*.46); }
+      else if(choice===4){ for(let i=0;i<5;i++){ spawnEnemy('stratoFighter',62,-56-i*38,i*.42); spawnEnemy('cloudDart',W-62,-74-i*38,i*.42+.24); } }
+      else { spawnEnemy('fortressGunship',W*.26,-72,.2); spawnEnemy('fortressGunship',W*.74,-120,.9); for(let i=0;i<5;i++) spawnEnemy('stormDrone',W/2+(i-2)*50,-156-i*20,i*.48); }
       return;
     }
 
@@ -2357,23 +2444,12 @@
   }
 
   function createBossParts(kind){
-    const cfg = kind==='stage1'
-      ? {gun:44,engine:54,cannon:66,scale:.88}
-      : kind==='stage2'
-        ? {gun:70,engine:82,cannon:102,scale:1.04}
-        : kind==='stage9'
-          ? {gun:200,engine:236,cannon:296,scale:1.48}
-        : kind==='stage8'
-          ? {gun:180,engine:214,cannon:268,scale:1.42}
-          : kind==='stage7'
-            ? {gun:156,engine:188,cannon:232,scale:1.36}
-            : kind==='stage6'
-            ? {gun:136,engine:164,cannon:204,scale:1.30}
-            : kind==='stage5'
-            ? {gun:118,engine:142,cannon:176,scale:1.24}
-            : kind==='stage4'
-            ? {gun:102,engine:124,cannon:152,scale:1.18}
-            : {gun:86,engine:104,cannon:128,scale:1.12};
+    const cfg=({
+      stage1:{gun:44,engine:54,cannon:66,scale:.88},stage2:{gun:70,engine:82,cannon:102,scale:1.04},stage3:{gun:86,engine:104,cannon:128,scale:1.12},
+      stage4:{gun:102,engine:124,cannon:152,scale:1.18},stage5:{gun:118,engine:142,cannon:176,scale:1.24},stage6:{gun:136,engine:164,cannon:204,scale:1.30},
+      stage7:{gun:156,engine:188,cannon:232,scale:1.36},stage8:{gun:180,engine:214,cannon:268,scale:1.42},stage9:{gun:200,engine:236,cannon:296,scale:1.48},
+      stage10:{gun:222,engine:260,cannon:326,scale:1.54},stage11:{gun:246,engine:286,cannon:358,scale:1.60},stage12:{gun:272,engine:316,cannon:396,scale:1.68}
+    }[kind]||{gun:86,engine:104,cannon:128,scale:1.12});
 
     const s=cfg.scale;
     if(kind==='stage9'){
@@ -2395,11 +2471,11 @@
   }
 
   function getBossPhase2Hp(kind){
-    return kind==='stage1' ? 190 : kind==='stage2' ? 300 : kind==='stage3' ? 420 : kind==='stage4' ? 560 : kind==='stage5' ? 700 : kind==='stage6' ? 860 : kind==='stage7' ? 1020 : kind==='stage8' ? 1240 : 1460;
+    return ({stage1:190,stage2:300,stage3:420,stage4:560,stage5:700,stage6:860,stage7:1020,stage8:1240,stage9:1460,stage10:1700,stage11:1980,stage12:2280}[kind]||420);
   }
 
   function triggerBossPhase2(){
-    if(!boss || boss.kind==='mid' || boss.phase2) return;
+    if(!boss || isMidBossKind(boss.kind) || boss.phase2) return;
     const phase2Hp = Math.ceil(getBossPhase2Hp(boss.kind)*currentDifficulty().hp);
     const kind=boss.kind;
     burst(boss.x,boss.y,kind==='stage9'?255:(kind==='stage8'?235:(kind==='stage7'?215:(kind==='stage6'?195:(kind==='stage5'?175:(kind==='stage4'?155:(kind==='stage3'?135:100)))))),'boss');
@@ -2408,7 +2484,9 @@
     shake=Math.max(shake,20);
     flash=Math.max(flash,1);
     boss.phase2=true;
+    boss.phase3=false;
     boss.parts=null;
+    if(kind==='stage12') boss.r=88;
     boss.hp=phase2Hp;
     boss.maxHp=phase2Hp;
     boss.phase=0;
@@ -2418,18 +2496,37 @@
     stopMusic();
     sfx('warning');
     showCoreCutin(kind);
-    showMessage(kind==='stage9'?'AI CORE EXPOSED / RETALIATION MODE':'CORE EXPOSED / PHASE 2',1050);
+    showMessage(kind==='stage12'?'NEMESIS TRANSFORM // HUMANOID PHASE':(kind==='stage9'?'AI CORE EXPOSED / RETALIATION MODE':'CORE EXPOSED / PHASE 2'),1050);
     setTimeout(()=>{ if(boss && boss.phase2 && running) switchMusic('core'); },560);
+  }
+
+  function triggerBossPhase3(){
+    if(!boss || boss.kind!=='stage12' || !boss.phase2 || boss.phase3) return;
+    enemyBullets.length=0;
+    player.inv=Math.max(player.inv,1.6);
+    burst(boss.x,boss.y,300,'boss');
+    shake=Math.max(shake,24); flash=1; sfx('warning');
+    boss.phase3=true; boss.r=70; boss.phase=0; boss.t=0; boss.shoot=.72;
+    boss.hp=Math.ceil(1880*currentDifficulty().hp); boss.maxHp=boss.hp; boss.coreAwaken=1.5;
+    showMessage('FINAL FORM // ZERO CORE AWAKENED',1300);
+    showRadio('FINAL CONTROL','最終コア露出！ これを破壊すれば終わる。',2800,'OMEGA LINK');
+    stopMusic(); setTimeout(()=>{if(boss&&boss.phase3&&running)switchMusic('core');},420);
+  }
+
+  function handleBossZero(){
+    if(!boss) return;
+    if(boss.kind==='stage12' && boss.phase2 && !boss.phase3){ triggerBossPhase3(); return; }
+    defeatBoss();
   }
 
   function defeatBoss(){
     if(!boss) return;
     const defeatedKind=boss.kind;
     const bx=boss.x, by=boss.y;
-    const bossScoreMap={mid:6000,mid4:9000,mid5:12000,mid6:15000,mid7:18000,mid8:22000,mid9:26000,stage1:15000,stage2:22000,stage3:30000,stage4:42000,stage5:56000,stage6:72000,stage7:90000,stage8:120000,stage9:145000};
+    const bossScoreMap={mid:6000,mid4:9000,mid5:12000,mid6:15000,mid7:18000,mid8:22000,mid9:26000,mid10:31000,mid11:37000,mid12:45000,stage1:15000,stage2:22000,stage3:30000,stage4:42000,stage5:56000,stage6:72000,stage7:90000,stage8:120000,stage9:145000,stage10:175000,stage11:210000,stage12:280000};
     addScore(bossScoreMap[defeatedKind]||15000);
     grantPilotExp(defeatedKind.startsWith('mid')?250:500);
-    burst(bx,by,(defeatedKind==='mid'||defeatedKind==='mid4'||defeatedKind==='mid5'||defeatedKind==='mid6'||defeatedKind==='mid7'||defeatedKind==='mid8'||defeatedKind==='mid9')?125:190,'boss');
+    burst(bx,by,(defeatedKind.startsWith('mid'))?125:190,'boss');
     flash=1; shake=20; sfx('bossDown');
     boss=null; bossWrap.style.display='none'; enemyBullets.length=0;
     if(defeatedKind==='mid'){
@@ -2461,6 +2558,12 @@
       showMessage('GUNSHIP WYVERN DESTROYED!',1200);
       tacticalState='CAUTION'; cautionTimer=5; detectionLevel=45; updateStealthHud();
       setTimeout(()=>switchMusic('stage9'),450);
+    } else if(defeatedKind==='mid10'){
+      midbossDefeated=true; showMessage('RAPTOR KNIGHT DESTROYED!',1200); setTimeout(()=>switchMusic('stage10'),450);
+    } else if(defeatedKind==='mid11'){
+      midbossDefeated=true; showMessage('ECLIPSE LANCER DESTROYED!',1200); setTimeout(()=>switchMusic('stage11'),450);
+    } else if(defeatedKind==='mid12'){
+      midbossDefeated=true; showMessage('OMEGA SERAPH DESTROYED!',1200); setTimeout(()=>switchMusic('stage12'),450);
     } else if(defeatedKind==='stage1'){
       stageTransition=true; stopMusic(); setTimeout(()=>sfx('clear'),80);
       setTimeout(()=>showStageResult(1,startStage2),650);
@@ -2484,7 +2587,16 @@
       setTimeout(()=>showStageResult(7,startStage8),650);
     } else if(defeatedKind==='stage9'){
       stageTransition=true; stopMusic(); stealthHud.style.display='none'; setTimeout(()=>sfx('clear'),80);
-      setTimeout(()=>showStageResult(9,()=>{ running=false; showMenuScreen('title'); },false),650);
+      setTimeout(()=>showStageResult(9,startStage10,false),650);
+    } else if(defeatedKind==='stage10'){
+      stageTransition=true; stopMusic(); setTimeout(()=>sfx('clear'),80);
+      setTimeout(()=>showStageResult(10,startStage11,false),650);
+    } else if(defeatedKind==='stage11'){
+      stageTransition=true; stopMusic(); setTimeout(()=>sfx('clear'),80);
+      setTimeout(()=>showStageResult(11,startStage12,false),650);
+    } else if(defeatedKind==='stage12'){
+      stageTransition=true; stopMusic(); setTimeout(()=>sfx('clear'),80);
+      setTimeout(()=>showStageResult(12,()=>{ running=false; showMenuScreen('title'); },true),650);
     } else {
       beginEscapeSequence();
     }
@@ -2504,7 +2616,7 @@
     escapeMode=false; stopMusic(); enemyBullets.length=0; enemies=[]; groundTargets=[];
     flash=1; shake=20; sfx('clear');
     showMessage('MISSION COMPLETE // MOTHERSHIP DESTROYED',1000);
-    setTimeout(()=>showStageResult(8,()=>{ running=false; showMenuScreen('title'); },true),700);
+    setTimeout(()=>showStageResult(8,startStage9,false),700);
   }
 
   function aliveBossParts(role){
@@ -2592,12 +2704,18 @@
       boss={kind:'stage7',x:W/2,y:-146,r:92,hp:1540,maxHp:1540,t:0,shoot:.33,phase:0,phase2:false,coreAwaken:0};
     } else if(stage===8){
       boss={kind:'stage8',x:W/2,y:-154,r:96,hp:1880,maxHp:1880,t:0,shoot:.30,phase:0,phase2:false,coreAwaken:0};
-    } else {
+    } else if(stage===9){
       boss={kind:'stage9',x:W/2,y:-162,r:102,hp:2260,maxHp:2260,t:0,shoot:.27,phase:0,phase2:false,coreAwaken:0};
       stealthHud.style.display='none';
+    } else if(stage===10){
+      boss={kind:'stage10',x:W/2,y:-170,r:108,hp:2580,maxHp:2580,t:0,shoot:.25,phase:0,phase2:false,coreAwaken:0};
+    } else if(stage===11){
+      boss={kind:'stage11',x:W/2,y:-176,r:112,hp:2920,maxHp:2920,t:0,shoot:.23,phase:0,phase2:false,coreAwaken:0};
+    } else {
+      boss={kind:'stage12',x:W/2,y:-184,r:118,hp:3360,maxHp:3360,t:0,shoot:.21,phase:0,phase2:false,phase3:false,coreAwaken:0};
     }
     boss.parts=createBossParts(boss.kind); scaleBossDifficulty(boss,true);
-    const bossName=['','WARNING','SEA FORTRESS','CITY DEFENSE CORE','INFERNO CARRIER','GLACIER CITADEL','NEON FORTRESS','OBLIVION CORE','GENESIS REACTOR','SENTINEL-04 ARBITER'][stage]||'WARNING';
+    const bossName=['','WARNING','SEA FORTRESS','CITY DEFENSE CORE','INFERNO CARRIER','GLACIER CITADEL','NEON FORTRESS','OBLIVION CORE','GENESIS REACTOR','SENTINEL-04 ARBITER','TEMPEST ARK','LUNAR COLOSSUS','NEMESIS GENESIS'][stage]||'WARNING';
     bossWrap.style.display='block'; showMessage(bossName,1100); shake=8; sfx('warning'); setTimeout(()=>switchMusic('boss'),420); bossRadio(stage);
   }
 
@@ -2659,6 +2777,22 @@
     bossWrap.style.display='block';
     showMessage('MID BOSS / CORE WARDEN',1250); shake=13; sfx('warning');
     setTimeout(()=>switchMusic('midboss'),300); midBossRadio(8);
+  }
+
+  function spawnMidBoss10(){
+    midbossSpawned=true; enemies.length=0; enemyBullets.length=0;
+    boss={kind:'mid10',x:W/2,y:-112,r:66,hp:720,maxHp:720,t:0,shoot:.28,phase:0}; scaleBossDifficulty(boss,false);
+    bossWrap.style.display='block'; showMessage('MID BOSS / RAPTOR KNIGHT',1250); shake=14; sfx('warning'); setTimeout(()=>switchMusic('midboss'),300); midBossRadio(10);
+  }
+  function spawnMidBoss11(){
+    midbossSpawned=true; enemies.length=0; enemyBullets.length=0;
+    boss={kind:'mid11',x:W/2,y:-116,r:69,hp:840,maxHp:840,t:0,shoot:.26,phase:0}; scaleBossDifficulty(boss,false);
+    bossWrap.style.display='block'; showMessage('MID BOSS / ECLIPSE LANCER',1250); shake=15; sfx('warning'); setTimeout(()=>switchMusic('midboss'),300); midBossRadio(11);
+  }
+  function spawnMidBoss12(){
+    midbossSpawned=true; enemies.length=0; enemyBullets.length=0;
+    boss={kind:'mid12',x:W/2,y:-120,r:72,hp:980,maxHp:980,t:0,shoot:.24,phase:0}; scaleBossDifficulty(boss,false);
+    bossWrap.style.display='block'; showMessage('MID BOSS / OMEGA SERAPH',1300); shake=16; sfx('warning'); setTimeout(()=>switchMusic('midboss'),300); midBossRadio(12);
   }
 
   function startStage2(){
@@ -2842,6 +2976,22 @@
     stageIntroRadio(9);
   }
 
+  function startStage10(){
+    stage=10; stageTime=0; spawnTimer=.31; bossSpawned=false; midbossSpawned=false; midbossDefeated=false; stageTransition=false; escapeMode=false;
+    resetStageStats(); bullets=[]; enemyBullets=[]; enemies=[]; groundTargets=[]; scenery=[]; boss=null; sceneryTimer=.16; groundTimer=.52;
+    player.x=W/2; player.y=H-120; player.inv=2.9; player.bombs=player.airframe==='OMEGA'?9:Math.min(selectedDifficulty==='VERY_EASY'?8:5,player.bombs+1); refreshStageShield(); bossWrap.style.display='none'; stealthHud.style.display='none'; updateHud(); showMessage('STAGE 10 / SKY FORTRESS',1800); switchMusic('stage10'); stageIntroRadio(10);
+  }
+  function startStage11(){
+    stage=11; stageTime=0; spawnTimer=.29; bossSpawned=false; midbossSpawned=false; midbossDefeated=false; stageTransition=false; escapeMode=false;
+    resetStageStats(); bullets=[]; enemyBullets=[]; enemies=[]; groundTargets=[]; scenery=[]; boss=null; sceneryTimer=.15; groundTimer=.48;
+    player.x=W/2; player.y=H-120; player.inv=3.0; player.bombs=player.airframe==='OMEGA'?9:Math.min(selectedDifficulty==='VERY_EASY'?8:5,player.bombs+1); refreshStageShield(); bossWrap.style.display='none'; stealthHud.style.display='none'; updateHud(); showMessage('STAGE 11 / LUNAR WARZONE',1850); switchMusic('stage11'); stageIntroRadio(11);
+  }
+  function startStage12(){
+    stage=12; stageTime=0; spawnTimer=.27; bossSpawned=false; midbossSpawned=false; midbossDefeated=false; stageTransition=false; escapeMode=false;
+    resetStageStats(); bullets=[]; enemyBullets=[]; enemies=[]; groundTargets=[]; scenery=[]; boss=null; sceneryTimer=.14; groundTimer=.44;
+    player.x=W/2; player.y=H-120; player.inv=3.2; player.bombs=player.airframe==='OMEGA'?9:Math.min(selectedDifficulty==='VERY_EASY'?8:5,player.bombs+1); refreshStageShield(); bossWrap.style.display='none'; stealthHud.style.display='none'; updateHud(); showMessage('STAGE 12 / ZERO FRONTIER',1900); switchMusic('stage12'); stageIntroRadio(12);
+  }
+
   function useBomb(){
     if(!running || gameOver || resultOpen || (player.bombs<=0 && player.airframe!=='OMEGA')) return;
     stageBombUse++;
@@ -2858,7 +3008,7 @@
         boss.hp-=player.airframe==='OMEGA'?120:28;
       }
       burst(boss.x,boss.y,36);
-      if(boss && boss.hp<=0) defeatBoss();
+      if(boss && boss.hp<=0) handleBossZero();
     }
     for(let i=0;i<120 && particles.length<520;i++){
       const a=Math.random()*Math.PI*2, rr=rnd(0,260);
@@ -2931,11 +3081,14 @@
       else if(stage===7) spawnScenery('hullSpire');
       else if(stage===8) spawnScenery('reactorWall');
       else if(stage===9) spawnScenery('blacksite');
+      else if(stage===10) spawnScenery('skyFortress');
+      else if(stage===11) spawnScenery('lunarBase');
+      else if(stage===12) spawnScenery('zeroSpire');
       else {
         const pick = Math.random();
         spawnScenery(pick<.42?'fortress':pick<.78?'base':'carrier');
       }
-      sceneryTimer = stage===2 ? rnd(3.2,5.0) : (stage===9 ? rnd(1.0,1.6) : (stage===8 ? rnd(1.05,1.75) : (stage===7 ? rnd(1.3,2.1) : (stage===6 ? rnd(1.55,2.45) : (stage===5 ? rnd(1.9,3.0) : (stage===4 ? rnd(2.0,3.2) : rnd(2.3,4.1)))))));
+      const sr=({2:[3.2,5.0],3:[2.3,4.1],4:[2.0,3.2],5:[1.9,3.0],6:[1.55,2.45],7:[1.3,2.1],8:[1.05,1.75],9:[1.0,1.6],10:[.92,1.45],11:[.86,1.36],12:[.78,1.25]}[stage]||[2.3,4.1]); sceneryTimer=rnd(sr[0],sr[1]);
     }
     for(const sc of scenery){
       sc.y += sc.vy*dt*starSpeed*.72;
@@ -2955,15 +3108,18 @@
       }
       if(routeTime>=10.5) finishSecretRoute();
     }
-    if((stage===3||stage===4||stage===5||stage===6||stage===7||stage===8||stage===9) && groundTimer<=0 && !boss && !escapeMode && !secretRouteActive){
-      if(stage===9){ const r=Math.random(); spawnGroundTarget(r<.18?'laserSensor':(r<.44?'samBattery':(r<.68?'commTower':'armoredPatrol'))); }
+    if(stage>=3 && stage<=12 && groundTimer<=0 && !boss && !escapeMode && !secretRouteActive){
+      if(stage===12){ const r=Math.random(); spawnGroundTarget(r<.44?'laserGate':(r<.72?'defensePylon':'phaseTurret')); }
+      else if(stage===11){ const r=Math.random(); spawnGroundTarget(r<.43?'frostBattery':(r<.72?'shieldNode':'defensePylon')); }
+      else if(stage===10){ const r=Math.random(); spawnGroundTarget(r<.44?'samBattery':(r<.72?'neonBattery':'defensePylon')); }
+      else if(stage===9){ const r=Math.random(); spawnGroundTarget(r<.18?'laserSensor':(r<.44?'samBattery':(r<.68?'commTower':'armoredPatrol'))); }
       else if(stage===8){ const r=Math.random(); spawnGroundTarget(r<.44?'laserGate':(r<.72?'reactorNode':'defensePylon')); }
       else if(stage===7){ const r=Math.random(); spawnGroundTarget(r<.44?'phaseTurret':(r<.72?'shieldNode':'coreVent')); }
       else if(stage===6){ const r=Math.random(); spawnGroundTarget(r<.44?'neonBattery':(r<.72?'holoRadar':'roofTank')); }
       else if(stage===5){ const r=Math.random(); spawnGroundTarget(r<.43?'frostBattery':(r<.72?'iceRadar':'snowCrawler')); }
       else if(stage===4){ const r=Math.random(); spawnGroundTarget(r<.42?'magmaTurret':(r<.72?'heatVent':'lavaTank')); }
       else spawnGroundTarget();
-      groundTimer=(stage===9?rnd(.86,1.35):(stage===8?rnd(.62,1.02):(stage===7?rnd(.72,1.16):(stage===6?rnd(.80,1.30):(stage===5?rnd(.92,1.48):(stage===4?rnd(1.0,1.65):rnd(1.2,2.0)))))))*(currentDifficulty().groundGap||1)*densityProfile().groundGap;
+      const gr=({3:[1.2,2.0],4:[1.0,1.65],5:[.92,1.48],6:[.80,1.30],7:[.72,1.16],8:[.62,1.02],9:[.86,1.35],10:[.58,.94],11:[.54,.88],12:[.49,.81]}[stage]||[1.2,2.0]); groundTimer=rnd(gr[0],gr[1])*(currentDifficulty().groundGap||1)*densityProfile().groundGap;
     }
     for(const g of groundTargets){
       g.t+=dt; g.y+=g.vy*dt*starSpeed*.88; g.flash=Math.max(0,g.flash-dt);
@@ -2982,7 +3138,7 @@
         const alertSpawn=stage===9?(tacticalState==='ALERT'?1.28:(tacticalState==='CAUTION'?1.10:1)):1; spawnTimer-=dt*alertSpawn;
         if(spawnTimer<=0){
           spawnWave();
-          spawnTimer=Math.max(stage===9?.30:(stage===8?.32:(stage===7?.36:(stage===6?.40:(stage===5?.44:(stage===4?.48:(stage===3?.54:(stage===2?.62:.8))))))),(stage===9?.92:(stage===8?.94:(stage===7?1.02:(stage===6?1.10:(stage===5?1.18:(stage===4?1.28:(stage===3?1.42:(stage===2?1.55:1.85))))))))-stageTime*.018)*(currentDifficulty().spawnGap||1)*densityProfile().spawnGap;
+          const minGap=({1:.8,2:.62,3:.54,4:.48,5:.44,6:.40,7:.36,8:.32,9:.30,10:.28,11:.26,12:.24}[stage]||.8); const baseGap=({1:1.85,2:1.55,3:1.42,4:1.28,5:1.18,6:1.10,7:1.02,8:.94,9:.92,10:.86,11:.80,12:.74}[stage]||1.85); spawnTimer=Math.max(minGap,baseGap-stageTime*.018)*(currentDifficulty().spawnGap||1)*densityProfile().spawnGap;
         }
       }
       if(stage>=3 && !aceSpawned && !boss && !secretRouteActive && stageTime>12.5){
@@ -3020,6 +3176,18 @@
       if(stage===9){
         if(!midbossSpawned && stageTime>24){ if(secretRouteUnlocked) beginSecretRoute(); else spawnMidBoss9(); }
         if(midbossDefeated && !bossSpawned && stageTime>(secretRouteUnlocked?56:63)){ bossSpawned=true; spawnBoss(); }
+      }
+      if(stage===10){
+        if(!midbossSpawned && stageTime>25){ spawnMidBoss10(); }
+        if(midbossDefeated && !bossSpawned && stageTime>66){ bossSpawned=true; spawnBoss(); }
+      }
+      if(stage===11){
+        if(!midbossSpawned && stageTime>26){ spawnMidBoss11(); }
+        if(midbossDefeated && !bossSpawned && stageTime>69){ bossSpawned=true; spawnBoss(); }
+      }
+      if(stage===12){
+        if(!midbossSpawned && stageTime>27){ spawnMidBoss12(); }
+        if(midbossDefeated && !bossSpawned && stageTime>72){ bossSpawned=true; spawnBoss(); }
       }
     }
 
@@ -3318,7 +3486,7 @@
           boss.hp-=hullDamage;
           if(armored) boss.hp=Math.max(1,boss.hp);
           used=!(b.laser||b.pierce); addScore(2); burst(b.x,b.y,2);
-          if(boss.hp<=0) defeatBoss();
+          if(boss.hp<=0) handleBossZero();
         }
       }
       if(used) bullets.splice(bi,1);
@@ -3984,7 +4152,28 @@
   }
 
   function drawCoreBoss(b){
-    const palette = b.kind==='stage1'
+    if(b.kind==='stage12' && !b.phase3){
+      // NEMESIS GENESIS humanoid phase: rear/top-down armored warform.
+      const p=.5+.5*Math.sin(b.t*7);
+      ctx.shadowBlur=34;ctx.shadowColor='#ff5da0';
+      for(const sx of [-1,1]){
+        ctx.fillStyle='#35152f';ctx.beginPath();ctx.moveTo(sx*18,-34);ctx.lineTo(sx*58,-18);ctx.lineTo(sx*72,8);ctx.lineTo(sx*42,16);ctx.lineTo(sx*22,4);ctx.closePath();ctx.fill();
+        ctx.strokeStyle='rgba(255,116,177,.70)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(sx*27,-24);ctx.lineTo(sx*60,2);ctx.stroke();
+        ctx.fillStyle='#a43a68';ctx.beginPath();ctx.moveTo(sx*14,-5);ctx.lineTo(sx*30,1);ctx.lineTo(sx*24,40);ctx.lineTo(sx*11,32);ctx.closePath();ctx.fill();
+        ctx.fillStyle='#5e274b';ctx.beginPath();ctx.moveTo(sx*10,31);ctx.lineTo(sx*25,42);ctx.lineTo(sx*16,73);ctx.lineTo(sx*5,60);ctx.closePath();ctx.fill();
+      }
+      const body=ctx.createLinearGradient(0,-58,0,65);body.addColorStop(0,'#ffe8f1');body.addColorStop(.24,'#c06a8a');body.addColorStop(.58,'#6a274c');body.addColorStop(1,'#260d21');ctx.fillStyle=body;
+      ctx.beginPath();ctx.moveTo(0,-58);ctx.lineTo(25,-40);ctx.lineTo(31,4);ctx.lineTo(17,31);ctx.lineTo(0,43);ctx.lineTo(-17,31);ctx.lineTo(-31,4);ctx.lineTo(-25,-40);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#191021';ctx.beginPath();ctx.roundRect(-10,-70,20,15,5);ctx.fill();
+      ctx.fillStyle='#ff82b5';ctx.shadowBlur=22;ctx.shadowColor='#ff4d99';ctx.fillRect(-7,-65,14,4);
+      ctx.fillStyle=`rgba(255,240,249,${.72+.28*p})`;ctx.beginPath();ctx.arc(0,-4,9+3*p,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='rgba(255,88,155,.58)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,-4,23+4*p,0,Math.PI*2);ctx.stroke();
+      ctx.shadowBlur=0;ctx.fillStyle='rgba(255,214,232,.72)';ctx.font='900 8px monospace';ctx.textAlign='center';ctx.fillText('NEMESIS // WARFORM',0,59);
+      return;
+    }
+    const palette = b.kind==='stage12'
+      ? {outer:'#ff83b6', mid:'#6f1f62', inner:'#fff2fa', shadow:'#ff4c9a'}
+      : b.kind==='stage1'
       ? {outer:'#78dcff', mid:'#1e7fd8', inner:'#efffff', shadow:'#5edbff'}
       : b.kind==='stage2'
         ? {outer:'#ff7b9f', mid:'#c63c68', inner:'#fff2f6', shadow:'#ff6f95'}
@@ -4030,7 +4219,13 @@
       ctx.restore(); return;
     }
 
-    if(boss.kind==='mid9'){ctx.shadowBlur=34;ctx.shadowColor='#d2ebff';const g=ctx.createLinearGradient(0,-72,0,64);g.addColorStop(0,'#f7fbff');g.addColorStop(.28,'#7b90a3');g.addColorStop(.68,'#2a3642');g.addColorStop(1,'#0c1116');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-68);ctx.lineTo(24,-46);ctx.lineTo(58,-24);ctx.lineTo(78,-2);ctx.lineTo(50,12);ctx.lineTo(24,16);ctx.lineTo(36,38);ctx.lineTo(16,30);ctx.lineTo(0,58);ctx.lineTo(-16,30);ctx.lineTo(-36,38);ctx.lineTo(-24,16);ctx.lineTo(-50,12);ctx.lineTo(-78,-2);ctx.lineTo(-58,-24);ctx.lineTo(-24,-46);ctx.closePath();ctx.fill();ctx.fillStyle='#121a20';ctx.beginPath();ctx.ellipse(0,-8,11,22,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(218,240,255,.56)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-60,0);ctx.lineTo(60,0);ctx.stroke();
+    if(boss.kind==='mid12'){
+      ctx.shadowBlur=38;ctx.shadowColor='#ff76b8';const g=ctx.createLinearGradient(0,-76,0,66);g.addColorStop(0,'#fff0f7');g.addColorStop(.28,'#ce6b9e');g.addColorStop(.66,'#65244d');g.addColorStop(1,'#1d0919');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-74);ctx.lineTo(28,-47);ctx.lineTo(70,-20);ctx.lineTo(82,4);ctx.lineTo(48,18);ctx.lineTo(26,16);ctx.lineTo(39,45);ctx.lineTo(15,35);ctx.lineTo(0,62);ctx.lineTo(-15,35);ctx.lineTo(-39,45);ctx.lineTo(-26,16);ctx.lineTo(-48,18);ctx.lineTo(-82,4);ctx.lineTo(-70,-20);ctx.lineTo(-28,-47);ctx.closePath();ctx.fill();ctx.strokeStyle='#ff8bc0';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-62,-8);ctx.lineTo(62,-8);ctx.stroke();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,-10,7,0,Math.PI*2);ctx.fill();ctx.restore();return;
+    } else if(boss.kind==='mid11'){
+      ctx.shadowBlur=34;ctx.shadowColor='#a9d2ff';const g=ctx.createLinearGradient(0,-72,0,64);g.addColorStop(0,'#f5f8ff');g.addColorStop(.28,'#9ba7ba');g.addColorStop(.66,'#46505f');g.addColorStop(1,'#15191f');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-70);ctx.lineTo(26,-45);ctx.lineTo(66,-18);ctx.lineTo(78,5);ctx.lineTo(45,17);ctx.lineTo(24,15);ctx.lineTo(36,42);ctx.lineTo(14,33);ctx.lineTo(0,59);ctx.lineTo(-14,33);ctx.lineTo(-36,42);ctx.lineTo(-24,15);ctx.lineTo(-45,17);ctx.lineTo(-78,5);ctx.lineTo(-66,-18);ctx.lineTo(-26,-45);ctx.closePath();ctx.fill();ctx.strokeStyle='#c7e0ff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-58,-7);ctx.lineTo(58,-7);ctx.stroke();ctx.fillStyle='#98caff';ctx.beginPath();ctx.arc(0,-12,7,0,Math.PI*2);ctx.fill();ctx.restore();return;
+    } else if(boss.kind==='mid10'){
+      ctx.shadowBlur=32;ctx.shadowColor='#bcefff';const g=ctx.createLinearGradient(0,-70,0,62);g.addColorStop(0,'#f8ffff');g.addColorStop(.28,'#8cb9d3');g.addColorStop(.66,'#35536a');g.addColorStop(1,'#101d29');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-68);ctx.lineTo(25,-44);ctx.lineTo(64,-18);ctx.lineTo(76,4);ctx.lineTo(44,16);ctx.lineTo(23,14);ctx.lineTo(35,40);ctx.lineTo(14,32);ctx.lineTo(0,57);ctx.lineTo(-14,32);ctx.lineTo(-35,40);ctx.lineTo(-23,14);ctx.lineTo(-44,16);ctx.lineTo(-76,4);ctx.lineTo(-64,-18);ctx.lineTo(-25,-44);ctx.closePath();ctx.fill();ctx.strokeStyle='#d6f7ff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-57,-6);ctx.lineTo(57,-6);ctx.stroke();ctx.fillStyle='#dffaff';ctx.beginPath();ctx.arc(0,-12,7,0,Math.PI*2);ctx.fill();ctx.restore();return;
+    } else if(boss.kind==='mid9'){ctx.shadowBlur=34;ctx.shadowColor='#d2ebff';const g=ctx.createLinearGradient(0,-72,0,64);g.addColorStop(0,'#f7fbff');g.addColorStop(.28,'#7b90a3');g.addColorStop(.68,'#2a3642');g.addColorStop(1,'#0c1116');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-68);ctx.lineTo(24,-46);ctx.lineTo(58,-24);ctx.lineTo(78,-2);ctx.lineTo(50,12);ctx.lineTo(24,16);ctx.lineTo(36,38);ctx.lineTo(16,30);ctx.lineTo(0,58);ctx.lineTo(-16,30);ctx.lineTo(-36,38);ctx.lineTo(-24,16);ctx.lineTo(-50,12);ctx.lineTo(-78,-2);ctx.lineTo(-58,-24);ctx.lineTo(-24,-46);ctx.closePath();ctx.fill();ctx.fillStyle='#121a20';ctx.beginPath();ctx.ellipse(0,-8,11,22,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(218,240,255,.56)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-60,0);ctx.lineTo(60,0);ctx.stroke();
     } else if(boss.kind==='mid8'){
       ctx.shadowBlur=32;ctx.shadowColor='#ff6378';const g=ctx.createLinearGradient(0,-68,0,60);g.addColorStop(0,'#fff8f9');g.addColorStop(.28,'#d47482');g.addColorStop(.68,'#5a2030');g.addColorStop(1,'#17070b');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-66);ctx.lineTo(24,-45);ctx.lineTo(52,-29);ctx.lineTo(77,-6);ctx.lineTo(54,12);ctx.lineTo(31,16);ctx.lineTo(51,36);ctx.lineTo(21,30);ctx.lineTo(0,56);ctx.lineTo(-21,30);ctx.lineTo(-51,36);ctx.lineTo(-31,16);ctx.lineTo(-54,12);ctx.lineTo(-77,-6);ctx.lineTo(-52,-29);ctx.lineTo(-24,-45);ctx.closePath();ctx.fill();ctx.fillStyle='#1f0b11';ctx.beginPath();ctx.ellipse(0,-8,10,23,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff0f2';ctx.beginPath();ctx.arc(0,-10,6,0,Math.PI*2);ctx.fill();
     } else if(boss.kind==='mid7'){
@@ -4059,6 +4254,24 @@
       ctx.restore(); return;
     }
 
+    if(boss.kind==='stage12'){
+      // NEMESIS GENESIS phase 1: vast final assault battleship.
+      ctx.shadowBlur=46;ctx.shadowColor='#ff4d9a';const h=ctx.createLinearGradient(0,-135,0,135);h.addColorStop(0,'#ffe7f1');h.addColorStop(.18,'#a84d75');h.addColorStop(.5,'#4b173e');h.addColorStop(.82,'#20091d');h.addColorStop(1,'#070207');ctx.fillStyle=h;
+      ctx.beginPath();ctx.moveTo(0,-132);ctx.lineTo(55,-103);ctx.lineTo(118,-78);ctx.lineTo(168,-34);ctx.lineTo(180,0);ctx.lineTo(148,34);ctx.lineTo(96,55);ctx.lineTo(52,72);ctx.lineTo(25,111);ctx.lineTo(0,132);ctx.lineTo(-25,111);ctx.lineTo(-52,72);ctx.lineTo(-96,55);ctx.lineTo(-148,34);ctx.lineTo(-180,0);ctx.lineTo(-168,-34);ctx.lineTo(-118,-78);ctx.lineTo(-55,-103);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#170816';ctx.beginPath();ctx.ellipse(0,-20,27,67,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ff78ae';ctx.fillRect(-11,-52,22,56);ctx.strokeStyle='rgba(255,122,180,.56)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-142,-8);ctx.lineTo(142,-8);ctx.moveTo(-102,38);ctx.lineTo(102,38);ctx.stroke();drawBossPartVisuals(boss);ctx.restore();return;
+    }
+    if(boss.kind==='stage11'){
+      // LUNAR COLOSSUS: lunar armored command dreadnought.
+      ctx.shadowBlur=42;ctx.shadowColor='#a6d4ff';const h=ctx.createLinearGradient(0,-128,0,130);h.addColorStop(0,'#f9fbff');h.addColorStop(.18,'#aab5c3');h.addColorStop(.5,'#4b5664');h.addColorStop(.82,'#222a33');h.addColorStop(1,'#0a0d11');ctx.fillStyle=h;
+      ctx.beginPath();ctx.moveTo(0,-124);ctx.lineTo(50,-98);ctx.lineTo(108,-72);ctx.lineTo(158,-31);ctx.lineTo(170,0);ctx.lineTo(143,31);ctx.lineTo(93,52);ctx.lineTo(49,69);ctx.lineTo(24,105);ctx.lineTo(0,126);ctx.lineTo(-24,105);ctx.lineTo(-49,69);ctx.lineTo(-93,52);ctx.lineTo(-143,31);ctx.lineTo(-170,0);ctx.lineTo(-158,-31);ctx.lineTo(-108,-72);ctx.lineTo(-50,-98);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#1b2028';ctx.beginPath();ctx.ellipse(0,-18,25,62,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#a8d4ff';ctx.fillRect(-10,-48,20,48);ctx.strokeStyle='rgba(190,220,255,.45)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-134,-7);ctx.lineTo(134,-7);ctx.moveTo(-94,34);ctx.lineTo(94,34);ctx.stroke();drawBossPartVisuals(boss);ctx.restore();return;
+    }
+    if(boss.kind==='stage10'){
+      // TEMPEST ARK: atmospheric floating fortress carrier.
+      ctx.shadowBlur=40;ctx.shadowColor='#aeeeff';const h=ctx.createLinearGradient(0,-124,0,126);h.addColorStop(0,'#f8ffff');h.addColorStop(.18,'#9bc7dc');h.addColorStop(.5,'#3f6680');h.addColorStop(.82,'#1d3549');h.addColorStop(1,'#09131d');ctx.fillStyle=h;
+      ctx.beginPath();ctx.moveTo(0,-120);ctx.lineTo(48,-94);ctx.lineTo(105,-68);ctx.lineTo(152,-30);ctx.lineTo(164,0);ctx.lineTo(139,29);ctx.lineTo(90,50);ctx.lineTo(47,66);ctx.lineTo(22,101);ctx.lineTo(0,122);ctx.lineTo(-22,101);ctx.lineTo(-47,66);ctx.lineTo(-90,50);ctx.lineTo(-139,29);ctx.lineTo(-164,0);ctx.lineTo(-152,-30);ctx.lineTo(-105,-68);ctx.lineTo(-48,-94);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#112533';ctx.beginPath();ctx.ellipse(0,-18,24,58,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#c7f5ff';ctx.fillRect(-9,-44,18,44);ctx.strokeStyle='rgba(204,247,255,.50)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-128,-6);ctx.lineTo(128,-6);ctx.moveTo(-90,32);ctx.lineTo(90,32);ctx.stroke();drawBossPartVisuals(boss);ctx.restore();return;
+    }
     if(boss.kind==='stage9'){
       // SENTINEL-04 ARBITER: original quadruped autonomous deterrence walker.
       const legPulse=Math.sin(boss.t*4)*3;
@@ -4193,8 +4406,14 @@
       bg.addColorStop(0,'#04070d');bg.addColorStop(.24,'#091425');bg.addColorStop(.56,'#0c1a1f');bg.addColorStop(1,'#020406');
     } else if(stage===8){
       bg.addColorStop(0,'#130609');bg.addColorStop(.24,'#2b0b14');bg.addColorStop(.56,'#1d0f16');bg.addColorStop(1,'#050306');
-    } else {
+    } else if(stage===9){
       bg.addColorStop(0,'#0a0f16');bg.addColorStop(.22,'#141d26');bg.addColorStop(.55,'#0e161d');bg.addColorStop(1,'#05080d');
+    } else if(stage===10){
+      bg.addColorStop(0,'#75b9db');bg.addColorStop(.26,'#4c86ab');bg.addColorStop(.58,'#21415f');bg.addColorStop(1,'#0b1b30');
+    } else if(stage===11){
+      bg.addColorStop(0,'#101622');bg.addColorStop(.26,'#252d3b');bg.addColorStop(.58,'#5c6672');bg.addColorStop(1,'#171a20');
+    } else {
+      bg.addColorStop(0,'#120719');bg.addColorStop(.25,'#2b0b38');bg.addColorStop(.58,'#160923');bg.addColorStop(1,'#030106');
     }
     ctx.fillStyle=bg;ctx.fillRect(-20,-20,W+40,H+40);
 
@@ -4340,7 +4559,7 @@
         ctx.strokeStyle='rgba(255,225,230,.18)';ctx.lineWidth=1;
         for(let i=0;i<18;i++){const x=(i*37+elapsed*.22)%W;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x-70,H);ctx.stroke();}
       }
-    } else {
+    } else if(stage===9){
       const belt=(elapsed*108)%172;ctx.fillStyle='rgba(18,24,30,.92)';for(let i=-1;i<6;i++){const y=i*162+belt-120;ctx.fillRect(16,y,108,128);ctx.fillRect(W-124,y+40,108,128);}
       ctx.strokeStyle='rgba(184,212,235,.20)';ctx.lineWidth=2;for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(38+i*72,0);ctx.lineTo(18+i*72,H);ctx.stroke();}
       ctx.strokeStyle='rgba(210,235,255,.16)';ctx.lineWidth=1;for(let i=0;i<24;i++){const x=(i*29+elapsed*.26)%W;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x-26,H);ctx.stroke();}
@@ -4352,6 +4571,41 @@
         for(let y=-40;y<H+80;y+=90){const yy=(y+(elapsed*.13)%90);ctx.beginPath();ctx.moveTo(82,yy);ctx.lineTo(W-82,yy);ctx.stroke();}
         ctx.fillStyle='rgba(150,255,220,.24)';ctx.font='900 12px system-ui';ctx.textAlign='center';ctx.fillText('SERVICE TUNNEL // ROUTE B',W/2,92);
       }
+    } else if(stage===10){
+      // SKY FORTRESS: high-altitude clouds, contrails and floating fortress lanes.
+      const cloudOff=(elapsed*.085)%220;
+      ctx.fillStyle='rgba(225,248,255,.10)';
+      for(let i=-1;i<6;i++){
+        const y=i*170+cloudOff-140, wob=Math.sin(i*1.7+elapsed*.001)*32;
+        ctx.beginPath();ctx.ellipse(W*.22+wob,y,125,30,.08,0,Math.PI*2);ctx.fill();
+        ctx.beginPath();ctx.ellipse(W*.76-wob*.4,y+74,150,36,-.06,0,Math.PI*2);ctx.fill();
+      }
+      ctx.strokeStyle='rgba(222,250,255,.24)';ctx.lineWidth=2;
+      for(let i=0;i<6;i++){const x=42+i*82;ctx.beginPath();ctx.moveTo(x-35,0);ctx.lineTo(x+45,H);ctx.stroke();}
+      ctx.fillStyle='rgba(153,226,255,.06)';ctx.fillRect(0,0,W,H);
+    } else if(stage===11){
+      // LUNAR WARZONE: regolith plates, crater shadows and base guidance lights.
+      const off=(elapsed*.060)%150;
+      ctx.fillStyle='rgba(15,18,23,.28)';
+      for(let i=-1;i<7;i++){
+        const y=i*135+off-100;
+        ctx.beginPath();ctx.ellipse(60+(i%3)*155,y,40+(i%2)*18,22+(i%3)*5,.2,0,Math.PI*2);ctx.fill();
+        ctx.beginPath();ctx.ellipse(W-55-(i%2)*180,y+62,31+(i%3)*13,18+(i%2)*6,-.2,0,Math.PI*2);ctx.fill();
+      }
+      ctx.strokeStyle='rgba(185,213,255,.16)';ctx.lineWidth=1.5;
+      for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(24+i*108,0);ctx.lineTo(48+i*96,H);ctx.stroke();}
+      ctx.fillStyle='rgba(150,193,255,.32)';
+      for(let i=0;i<18;i++){const x=36+(i%6)*78,y=((i*74+elapsed*.055*(1+i%2))%(H+80))-40;ctx.fillRect(x,y,3,6);}
+    } else {
+      // ZERO FRONTIER: void citadel conduits, magenta energy lanes and collapsing space-grid.
+      const off=(elapsed*.13)%128;
+      ctx.strokeStyle='rgba(255,92,154,.24)';ctx.lineWidth=1.5;
+      for(let i=0;i<8;i++){const x=i*70-20;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+Math.sin(elapsed*.002+i)*55,H);ctx.stroke();}
+      ctx.strokeStyle='rgba(145,91,255,.17)';
+      for(let y=-128;y<H+128;y+=128){const yy=y+off;ctx.beginPath();ctx.moveTo(0,yy);ctx.lineTo(W,yy+22);ctx.stroke();}
+      ctx.fillStyle='rgba(255,64,132,.38)';
+      for(let i=0;i<24;i++){const x=(i*83+elapsed*.10*(1+i%3))%W,y=(i*59+elapsed*.12*(1+i%2))%H;ctx.fillRect(x,y,2+(i%2),5+(i%3));}
+      ctx.fillStyle=`rgba(183,44,255,${.035+.02*(.5+.5*Math.sin(elapsed*.009))})`;ctx.fillRect(0,0,W,H);
     }
 
     // background scenery: ships at sea / installations over the city
@@ -4366,7 +4620,18 @@
       g.addColorStop(.28, sc.color);
       g.addColorStop(1, 'rgba(7,12,20,.92)');
       ctx.fillStyle = g;
-      if(stage===2){
+      if(sc.type==='skyFortress'){
+        ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-sc.h*.52);ctx.lineTo(sc.w*.42,-sc.h*.22);ctx.lineTo(sc.w*.48,sc.h*.14);ctx.lineTo(sc.w*.20,sc.h*.32);ctx.lineTo(0,sc.h*.48);ctx.lineTo(-sc.w*.20,sc.h*.32);ctx.lineTo(-sc.w*.48,sc.h*.14);ctx.lineTo(-sc.w*.42,-sc.h*.22);ctx.closePath();ctx.fill();
+        ctx.fillStyle='rgba(214,248,255,.46)';ctx.fillRect(-sc.w*.25,-sc.h*.08,sc.w*.5,sc.h*.09);ctx.fillRect(-sc.w*.06,-sc.h*.42,sc.w*.12,sc.h*.22);
+        ctx.strokeStyle='rgba(225,252,255,.58)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-sc.w*.38,sc.h*.12);ctx.lineTo(sc.w*.38,sc.h*.12);ctx.stroke();
+      } else if(sc.type==='lunarBase'){
+        ctx.fillStyle=g;ctx.fillRect(-sc.w*.43,-sc.h*.32,sc.w*.86,sc.h*.64);ctx.fillStyle='rgba(197,219,238,.34)';
+        ctx.beginPath();ctx.arc(-sc.w*.20,-sc.h*.05,sc.h*.20,Math.PI,0);ctx.fill();ctx.beginPath();ctx.arc(sc.w*.20,-sc.h*.05,sc.h*.17,Math.PI,0);ctx.fill();
+        ctx.strokeStyle='rgba(174,211,255,.48)';ctx.lineWidth=2;ctx.strokeRect(-sc.w*.34,-sc.h*.20,sc.w*.68,sc.h*.40);
+      } else if(sc.type==='zeroSpire'){
+        ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-sc.h*.54);ctx.lineTo(sc.w*.20,-sc.h*.22);ctx.lineTo(sc.w*.42,sc.h*.34);ctx.lineTo(sc.w*.10,sc.h*.45);ctx.lineTo(0,sc.h*.22);ctx.lineTo(-sc.w*.10,sc.h*.45);ctx.lineTo(-sc.w*.42,sc.h*.34);ctx.lineTo(-sc.w*.20,-sc.h*.22);ctx.closePath();ctx.fill();
+        ctx.fillStyle='rgba(255,105,163,.62)';ctx.fillRect(-3,-sc.h*.44,6,sc.h*.76);ctx.strokeStyle='rgba(217,133,255,.52)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-sc.w*.30,sc.h*.20);ctx.lineTo(sc.w*.30,sc.h*.20);ctx.stroke();
+      } else if(stage===2){
         // non-destructible naval ship silhouette far below
         ctx.beginPath();
         ctx.moveTo(0,-sc.h*.52);ctx.lineTo(sc.w*.18,-sc.h*.31);ctx.lineTo(sc.w*.25,sc.h*.28);ctx.lineTo(sc.w*.12,sc.h*.48);ctx.lineTo(-sc.w*.12,sc.h*.48);ctx.lineTo(-sc.w*.25,sc.h*.28);ctx.lineTo(-sc.w*.18,-sc.h*.31);ctx.closePath();ctx.fill();
@@ -4407,7 +4672,7 @@
       ctx.restore();
     }
 
-    if(stage===3||stage===4||stage===5||stage===6||stage===7||stage===8||stage===9) for(const g of groundTargets) drawGroundTarget(g);
+    if(stage>=3 && stage<=12) for(const g of groundTargets) drawGroundTarget(g);
 
     for(const p of powerups){
       ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.t*2.4);
